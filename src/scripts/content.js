@@ -55,6 +55,7 @@ class Profile {
     #injectAttributes() {
         this.#disablePendingIndication()
         this.#injectClassIcon()
+        this.#injectGearPowerHeader()
         this.#injectCurrentGearsPower()
         this.#injectMaxGearsPower()
     }
@@ -73,6 +74,13 @@ class Profile {
         img.style.width = '20px'
         img.classList.add("js-injection--class-icon")
         this.injectedDom.appendChild(img)
+    }
+
+    #injectGearPowerHeader() {
+        const header = document.createElement('div')
+        header.innerHTML = "Снаряжение"
+        header.classList.add("js-injection--gears-power-header")
+        this.injectedDom.appendChild(header)
     }
 
     #injectCurrentGearsPower() {
