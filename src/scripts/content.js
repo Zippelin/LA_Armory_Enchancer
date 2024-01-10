@@ -35,7 +35,7 @@ class ImbuedProfile {
         return matches[1]
     }
     
-    queryProfile() {
+    query() {
         fetch(
             this.#BASE_ARMORY_URL + this.name
         ).then(
@@ -100,8 +100,8 @@ class ImbuedProfile {
     }
 
     /*
-    Создаем шаблон для иньекции в список персонажей
-*/
+        Создаем шаблон для иньекции в список персонажей
+    */
     #createInjectionElement() {
         const gearsPowerLevel = document.createElement('div')
         gearsPowerLevel.classList.add("js-injection--gears-power-wrapped")
@@ -121,7 +121,6 @@ class ActiveProfile {
 
     constructor(text) {
         this.profile = this.#getProfile(text)
-        this.#injectEquipment(this.profile.Equip)
     }
 
     #getProfile(text) {
@@ -178,6 +177,10 @@ class ActiveProfile {
 
         return wrapper
     }
+
+    inject() {
+        this.#injectEquipment(this.profile.Equip)
+    }
 }
 
 
@@ -192,7 +195,7 @@ function processImbuedProfile() {
                     buttons[buttonIndex].getElementsByTagName("span")[0].innerHTML,
                     buttons[buttonIndex]
                 )
-                profile.queryProfile()
+                profile.query()
                 profiles.push(
                     profile
                 )
@@ -207,9 +210,12 @@ function processActiveProfile() {
     const activeProfile = new ActiveProfile(
         script
     )
+    activeProfile.inject()
 }
 
 
-
+/*
+    Запуск пайплайна
+*/
 processImbuedProfile()
 processActiveProfile()
