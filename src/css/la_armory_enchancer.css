@@ -1,0 +1,35 @@
+.js-injection--gears-power-wrapped {
+    width: 100%;
+}
+
+.js-injection--gears-power-pending {
+    font-size: 10px;
+    font-weight: bold;
+    color: rgb(132, 132, 132)
+}
+
+.js-injection--gears-power-values-minor {
+    display: inline;
+    font-size: 10px;
+    font-weight: bold;
+    color: bisque;
+}
+
+.js-injection--gears-power-values-major {
+    display: inline;
+    font-size: 16px;
+    font-weight: bold;
+    color: rgb(255, 248, 239);
+}
+
+.js-injection--gears-power-header {
+    display: inline;
+    font-size: 12px;
+    font-weight: bold;
+    color: rgb(182, 100, 0);
+    padding-right: 5px;
+}
+
+.js-injection--class-icon {
+    padding-left: 200px;
+}
