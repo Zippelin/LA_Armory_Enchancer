@@ -1,19 +1,16 @@
-const BASE_ARMORY_URL = "https://xn--80aubmleh.xn--p1ai/%D0%9E%D1%80%D1%83%D0%B6%D0%B5%D0%B9%D0%BD%D0%B0%D1%8F/"
-
-
-class Profile {
+class ImbuedProfile {
     #BASE_ARMORY_URL = "https://xn--80aubmleh.xn--p1ai/%D0%9E%D1%80%D1%83%D0%B6%D0%B5%D0%B9%D0%BD%D0%B0%D1%8F/"
     #regexMaxGearsPower = /.+<div class="level-info2__item"><span>Максимальный рейтинг<\/span><span><small>Ур.<\/small>(?<currentGearsMain>\d*,*\d+).+(?<currentGearsSecondary>.*\d\d)/
     #regexCurrentGearsPower = /.+<div class="level-info2__expedition"><span>Текущий рейтинг снаряжения<\/span><span><small>Ур.<\/small>(?<currentGearsMain>\d*,*\d+).+(?<currentGearsSecondary>.*\d\d)/
     #regexClassPathIcon = /.+<img class="profile-character-info__img" src="(?<iconPath>.+?)"/
 
-    constructor(name, parentDom, injectedDom) {
+    constructor(name, parentDom) {
         this.name = name
         this.maxGearsPower = '0'
         this.currentGearsPower = '0'
         this.iconPath = ''
         this.parentDom = parentDom
-        this.injectedDom = injectedDom
+        this.injectedDom = this.#createInjectionElement()
         this.parentDom.insertAdjacentElement('beforeend', this.injectedDom)
     }
 
@@ -78,7 +75,7 @@ class Profile {
 
     #injectGearPowerHeader() {
         const header = document.createElement('div')
-        header.innerHTML = "Снаряжение"
+        header.innerHTML = "Снаряжение:"
         header.classList.add("js-injection--gears-power-header")
         this.injectedDom.appendChild(header)
     }
@@ -101,21 +98,99 @@ class Profile {
         this.injectedDom.appendChild(splitter)
         this.injectedDom.appendChild(maxPower)
     }
+
+    /*
+    Создаем шаблон для иньекции в список персонажей
+*/
+    #createInjectionElement() {
+        const gearsPowerLevel = document.createElement('div')
+        gearsPowerLevel.classList.add("js-injection--gears-power-wrapped")
+        const loadingIndication = document.createElement('span')
+        loadingIndication.innerHTML = 'загружаю...'
+        loadingIndication.classList.add(
+            "js-injection--gears-power-pending"
+            )
+        gearsPowerLevel.appendChild(loadingIndication)
+        return gearsPowerLevel
+    }
 }
 
 
+class ActiveProfile {
+    #regexProfile = /.*<script type="text\/javascript">[\S\s]*Profile = (?<profileData>\{[\S\s]+\});\n<\/script>/
 
-function processProfile() {
+    constructor(text) {
+        this.profile = this.#getProfile(text)
+        this.#injectEquipment(this.profile.Equip)
+    }
+
+    #getProfile(text) {
+        const match = text.match(this.#regexProfile)
+        return JSON.parse(match[1])
+    }
+
+    #getColorByQuality(quality) {
+        switch (true) {
+            case quality === 0:
+                return "rgb(0, 0, 0)"
+            case quality < 39:
+                return "rgb(225, 192, 0)"
+            case quality <70:
+                return "rgb(145,254,0)"
+            case quality < 90:
+                return "rgb(2,181,255)"
+            case quality < 100:
+                return "rgb(255, 0, 221)"
+            case quality === 100:
+                return "rgb(255, 94, 0)"
+        }
+    }
+
+    #injectEquipment(equipment) {
+        for (let itemName in equipment) {
+            if (
+                equipment[itemName].Element_001.type === "ItemTitle" && 
+                equipment[itemName].Element_001.value.qualityValue &&
+                equipment[itemName].Element_001.value.qualityValue != -1
+                ) {
+                const domElement = document.querySelector('[data-item=' + '"' + itemName + '"]' )
+                domElement.insertAdjacentElement('beforeend', this.#createCurrentProfileInjection(
+                    equipment[itemName].Element_001.value.qualityValue
+                ))
+            }
+        }
+    }
+
+    #createCurrentProfileInjection(quality){
+        const wrapper = document.createElement('div')
+        wrapper.classList.add('js-injection--current-profile-quality-wrapper')
+
+        const qualityLine = document.createElement('div')
+        qualityLine.style.background = this.#getColorByQuality(quality)
+        qualityLine.classList.add('js-injection--current-profile-quality-line')
+
+        const qualityText = document.createElement('div')
+        qualityText.classList.add('js-injection--current-profile-quality-text')
+        qualityText.innerText = quality
+
+        wrapper.appendChild(qualityText)
+        wrapper.appendChild(qualityLine)
+
+        return wrapper
+    }
+}
+
+
+function processImbuedProfile() {
     const serversList = document.querySelectorAll(".profile-character-list__char")
     let profiles = []
     if (serversList) {
         for (let serverIndex = 0; serverIndex < serversList.length; serverIndex++) {
             const buttons = serversList[serverIndex].getElementsByTagName("button")
             for (let buttonIndex = 0; buttonIndex < buttons.length; buttonIndex++) {
-                const profile = new Profile(
+                const profile = new ImbuedProfile(
                     buttons[buttonIndex].getElementsByTagName("span")[0].innerHTML,
-                    buttons[buttonIndex],
-                    createInjectionElement()
+                    buttons[buttonIndex]
                 )
                 profile.queryProfile()
                 profiles.push(
@@ -127,19 +202,14 @@ function processProfile() {
 
 }
 
-/*
-    Создаем шаблон для иньекции в список персонажей
-*/
-function createInjectionElement() {
-    const gearsPowerLevel = document.createElement('div')
-    gearsPowerLevel.classList.add("js-injection--gears-power-wrapped")
-    const loadingIndication = document.createElement('span')
-    loadingIndication.innerHTML = 'загружаю...'
-    loadingIndication.classList.add(
-        "js-injection--gears-power-pending"
-        )
-    gearsPowerLevel.appendChild(loadingIndication)
-    return gearsPowerLevel
+function processActiveProfile() {
+    const script = document.querySelector("html").innerHTML
+    const activeProfile = new ActiveProfile(
+        script
+    )
 }
 
-processProfile()
+
+
+processImbuedProfile()
+processActiveProfile()

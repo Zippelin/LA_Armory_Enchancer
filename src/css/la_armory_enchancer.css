@@ -33,3 +33,37 @@
 .js-injection--class-icon {
     padding-left: 200px;
 }
+
+.js-injection--current-profile-quality-line {
+    height: 7px;
+    border-radius: 0px 0px 5px 5px;
+    border: 2px solid wheat;
+    color: wheat;
+    bottom: 0;
+    position: absolute;
+    width: 40px;
+    margin-bottom: -8px;
+    margin-left: 3px;
+}
+
+.js-injection--current-profile-quality-text {
+    height: 7px;
+    position: relative;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    margin-bottom: 7px;
+    bottom: 0;
+    z-index: 10;
+    width: 50px;
+    position: absolute;
+    text-shadow: 2px 0 2px #000;
+}
+
+.js-injection--current-profile-quality-wrapper {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+
+}
