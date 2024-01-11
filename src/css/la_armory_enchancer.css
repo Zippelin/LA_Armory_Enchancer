@@ -67,3 +67,14 @@
     height: 50px;
 
 }
+
+.js-injection--current-profile-engrave-icon {
+    float: left;
+    margin-right: 5px;
+}
+
+.js-injection--current-profile-engrave-level {
+    color: #e4ba27 !important;
+    font-weight: bold;
+    float: right;
+}

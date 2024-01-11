@@ -118,6 +118,7 @@ class ImbuedProfile {
 
 class ActiveProfile {
     #regexProfile = /.*<script type="text\/javascript">[\S\s]*Profile = (?<profileData>\{[\S\s]+\});\n<\/script>/
+    #KOREAN_CDN_BASE_URL = 'https://cdn-lostark.game.onstove.com/'
 
     constructor(text) {
         this.profile = this.#getProfile(text)
@@ -145,16 +146,16 @@ class ActiveProfile {
         }
     }
 
-    #injectEquipment(equipment) {
-        for (let itemName in equipment) {
+    #injectEquipment() {
+        for (let itemName in this.profile.Equip) {
             if (
-                equipment[itemName].Element_001.type === "ItemTitle" && 
-                equipment[itemName].Element_001.value.qualityValue &&
-                equipment[itemName].Element_001.value.qualityValue != -1
+                this.profile.Equip[itemName].Element_001.type === "ItemTitle" && 
+                this.profile.Equip[itemName].Element_001.value.qualityValue &&
+                this.profile.Equip[itemName].Element_001.value.qualityValue != -1
                 ) {
                 const domElement = document.querySelector('[data-item=' + '"' + itemName + '"]' )
                 domElement.insertAdjacentElement('beforeend', this.#createCurrentProfileInjection(
-                    equipment[itemName].Element_001.value.qualityValue
+                    this.profile.Equip[itemName].Element_001.value.qualityValue
                 ))
             }
         }
@@ -178,8 +179,87 @@ class ActiveProfile {
         return wrapper
     }
 
+    /*
+        Забираем DOM обертки гравировок
+    */
+    #getEngravesWrapper() {
+        return document.querySelector('.swiper-wrapper')
+    }
+
+    /*
+        Отключаем пагинатор Гравировок
+    */
+    #disableEngravesPaginator() {
+        const container = document.querySelector('.swiper-container')
+        container.removeChild(document.querySelector('.swiper-option'))
+    }
+
+    /*
+        Изменяем блок с Гравировками
+    */
+    #engraveItemPrettier(engraveDome) {
+        let engraveText = engraveDome.getElementsByTagName('span')[0].innerHTML
+        const regexEngraveLevel = /(.*)(\d+ ур.)/
+        const match = engraveText.match(regexEngraveLevel)
+        if (match.length === 3) {
+            engraveDome.getElementsByTagName('span')[0].innerHTML = match[1]
+            const levelSpan = document.createElement('span')
+            levelSpan.innerText = match[2]
+            levelSpan.classList.add('js-injection--current-profile-engrave-level')
+            engraveDome.appendChild(levelSpan)
+            const engraveIncoPath = this.#getEngraveIconPath(match[1])
+
+            if (engraveIncoPath) {
+                engraveDome.getElementsByTagName('span')[0].style = 'font-weight: bold !important'
+                const img = document.createElement('img')
+                img.src = engraveIncoPath
+                img.style.height = '20px'
+                img.style.width = '20px'
+                img.classList.add('js-injection--current-profile-engrave-icon')
+                engraveDome.insertBefore(img, engraveDome.getElementsByTagName('span')[0])
+            }
+        }
+    }
+
+    /*
+        Формируем ссылку на корейскую армори
+    */
+    #getEngraveIconPath(engraveName) {
+        for (let engrave in this.profile.Engrave) {
+            if (this.profile.Engrave[engrave].Element_000.value.toLowerCase().trim() == engraveName.toLowerCase().trim()) {
+                return this.#KOREAN_CDN_BASE_URL + this.profile.Engrave[engrave].Element_001.value.slotData.iconPath
+            }
+        }
+        return ''
+    }
+
+    #flatterEngraveWrapper() {
+        const engravesWrapper = this.#getEngravesWrapper()
+        for (let i = 0; i < engravesWrapper.children.length; i++) {
+            for (let j = 0; j < engravesWrapper.children[i].children.length; j++) {
+                let child = engravesWrapper.children[i].children[j]
+                this.#engraveItemPrettier(child)
+                // Если не на 1ой странице, то перемещаем энгравы на 1ую
+                if (i > 0) {
+                    engravesWrapper.children[0].appendChild(child)
+                    j--
+                }
+
+            }
+            
+        }
+        
+    }
+
+    #injectEngraves() {
+        this.#flatterEngraveWrapper()
+        this.#disableEngravesPaginator()
+    }
+
     inject() {
-        this.#injectEquipment(this.profile.Equip)
+        this.#injectEquipment()
+        this.#injectEngraves( )
+       
     }
 }
 
