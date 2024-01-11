@@ -260,11 +260,6 @@ class ActiveProfile {
             }
             
         }
-        // engravesWrapper.children[0].childNodes.sort(function(a, b) {
-        //     return a.getElementsByTagName('img') ? 0 : 1
-        // })
-        console.log(engravesWrapper.children[0].children);
-        
     }
 
     #injectEngraves() {
