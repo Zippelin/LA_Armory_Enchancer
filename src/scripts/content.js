@@ -199,6 +199,7 @@ class ActiveProfile {
     */
     #engraveItemPrettier(engraveDome) {
         let engraveText = engraveDome.getElementsByTagName('span')[0].innerHTML
+        engraveDome.classList.add('js-injection--current-profile-engrave-wrapper')
         const regexEngraveLevel = /(.*)(\d+ ур.)/
         const match = engraveText.match(regexEngraveLevel)
         if (match.length === 3) {
@@ -239,15 +240,28 @@ class ActiveProfile {
             for (let j = 0; j < engravesWrapper.children[i].children.length; j++) {
                 let child = engravesWrapper.children[i].children[j]
                 this.#engraveItemPrettier(child)
+                // Если есть иконта Енгравы, то кидаем ее в начало (сортировка)
+                if (child.getElementsByTagName('img').length > 0) {
+                    engravesWrapper.children[0].insertBefore(child, engravesWrapper.children[0].children[0])
+                }
                 // Если не на 1ой странице, то перемещаем энгравы на 1ую
                 if (i > 0) {
-                    engravesWrapper.children[0].appendChild(child)
+                    // Если есть иконта Енгравы, то кидаем ее в начало (сортировка)
+                    if (child.getElementsByTagName('img').length > 0) {
+                        engravesWrapper.children[0].insertBefore(child, engravesWrapper.children[0].children[0])
+                    } else {
+                        engravesWrapper.children[0].appendChild(child)
+                    }
                     j--
                 }
 
             }
             
         }
+        // engravesWrapper.children[0].childNodes.sort(function(a, b) {
+        //     return a.getElementsByTagName('img') ? 0 : 1
+        // })
+        console.log(engravesWrapper.children[0].children);
         
     }
 

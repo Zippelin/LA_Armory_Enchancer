@@ -78,3 +78,12 @@
     font-weight: bold;
     float: right;
 }
+
+/* Убираем привязку к высоте, чтобы энгравы без пагинации не наезжали на нижние блоки */
+.profile-ability-engrave {
+    height: auto !important;
+}
+
+.js-injection--current-profile-engrave-wrapper {
+    border-bottom: 1px solid #e4bb2725;
+}
