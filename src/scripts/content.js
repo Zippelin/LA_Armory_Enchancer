@@ -133,16 +133,18 @@ class ActiveProfile {
         switch (true) {
             case quality === 0:
                 return "rgb(0, 0, 0)"
-            case quality < 39:
-                return "rgb(225, 192, 0)"
-            case quality <70:
-                return "rgb(145,254,0)"
+            case quality < 10:
+                return "rgba(255,86,27,255)"            
+            case quality < 30:
+                return "rgba(255,241,13,255)"            
+            case quality < 70:
+                return "rgba(99,177,11,255)"       
             case quality < 90:
-                return "rgb(2,181,255)"
+                return "rgba(16,205,255,255)"
             case quality < 100:
-                return "rgb(255, 0, 221)"
+                return "rgba(181,12,255,255)"
             case quality === 100:
-                return "rgb(255, 94, 0)"
+                return "rgba(231,105,41,255)"
         }
     }
 
