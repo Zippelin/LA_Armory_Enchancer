@@ -126,7 +126,11 @@ class ActiveProfile {
 
     #getProfile(text) {
         const match = text.match(this.#regexProfile)
-        return JSON.parse(match[1])
+        let result = {}
+        if (match) {
+            result = JSON.parse(match[1])
+        }
+        return result
     }
 
     #getColorByQuality(quality) {
@@ -149,18 +153,21 @@ class ActiveProfile {
     }
 
     #injectEquipment() {
-        for (let itemName in this.profile.Equip) {
-            if (
-                this.profile.Equip[itemName].Element_001.type === "ItemTitle" && 
-                this.profile.Equip[itemName].Element_001.value.qualityValue &&
-                this.profile.Equip[itemName].Element_001.value.qualityValue != -1
-                ) {
-                const domElement = document.querySelector('[data-item=' + '"' + itemName + '"]' )
-                domElement.insertAdjacentElement('beforeend', this.#createCurrentProfileInjection(
-                    this.profile.Equip[itemName].Element_001.value.qualityValue
-                ))
+        if (this.profile) {
+            for (let itemName in this.profile.Equip) {
+                if (
+                    this.profile.Equip[itemName].Element_001.type === "ItemTitle" && 
+                    this.profile.Equip[itemName].Element_001.value.qualityValue &&
+                    this.profile.Equip[itemName].Element_001.value.qualityValue != -1
+                    ) {
+                    const domElement = document.querySelector('[data-item=' + '"' + itemName + '"]' )
+                    domElement.insertAdjacentElement('beforeend', this.#createCurrentProfileInjection(
+                        this.profile.Equip[itemName].Element_001.value.qualityValue
+                    ))
+                }
             }
         }
+
     }
 
     #getLineWidthByQuality(quality) {
@@ -212,7 +219,9 @@ class ActiveProfile {
     */
     #disableEngravesPaginator() {
         const container = document.querySelector('.swiper-container')
-        container.removeChild(document.querySelector('.swiper-option'))
+        if (container) {
+            container.removeChild(document.querySelector('.swiper-option'))
+        }
     }
 
     /*
@@ -257,27 +266,28 @@ class ActiveProfile {
 
     #flatterEngraveWrapper() {
         const engravesWrapper = this.#getEngravesWrapper()
-        for (let i = 0; i < engravesWrapper.children.length; i++) {
-            for (let j = 0; j < engravesWrapper.children[i].children.length; j++) {
-                let child = engravesWrapper.children[i].children[j]
-                this.#engraveItemPrettier(child)
-                // Если есть иконта Енгравы, то кидаем ее в начало (сортировка)
-                if (child.getElementsByTagName('img').length > 0) {
-                    engravesWrapper.children[0].insertBefore(child, engravesWrapper.children[0].children[0])
-                }
-                // Если не на 1ой странице, то перемещаем энгравы на 1ую
-                if (i > 0) {
+        if (engravesWrapper) {
+            for (let i = 0; i < engravesWrapper.children.length; i++) {
+                for (let j = 0; j < engravesWrapper.children[i].children.length; j++) {
+                    let child = engravesWrapper.children[i].children[j]
+                    this.#engraveItemPrettier(child)
                     // Если есть иконта Енгравы, то кидаем ее в начало (сортировка)
                     if (child.getElementsByTagName('img').length > 0) {
                         engravesWrapper.children[0].insertBefore(child, engravesWrapper.children[0].children[0])
-                    } else {
-                        engravesWrapper.children[0].appendChild(child)
                     }
-                    j--
-                }
-
+                    // Если не на 1ой странице, то перемещаем энгравы на 1ую
+                    if (i > 0) {
+                        // Если есть иконта Енгравы, то кидаем ее в начало (сортировка)
+                        if (child.getElementsByTagName('img').length > 0) {
+                            engravesWrapper.children[0].insertBefore(child, engravesWrapper.children[0].children[0])
+                        } else {
+                            engravesWrapper.children[0].appendChild(child)
+                        }
+                        j--
+                    }
+    
+                }   
             }
-            
         }
     }
 
