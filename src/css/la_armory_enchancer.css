@@ -34,16 +34,28 @@
     padding-left: 200px;
 }
 
-.js-injection--current-profile-quality-line {
+.js-injection--current-profile-quality-lines-wrapper {
     height: 7px;
-    border-radius: 0px 0px 5px 5px;
-    border: 2px solid wheat;
     color: wheat;
     bottom: 0;
     position: absolute;
     width: 40px;
     margin-bottom: -8px;
     margin-left: 3px;
+    display: inline;
+    border-radius: 0px 0px 5px 5px;
+    border: 2px solid wheat;
+    background: none;
+    z-index: 10;
+}
+
+.js-injection--current-profile-quality-line {
+    height: 7px;
+    bottom: 0;
+    position: absolute;
+    margin-bottom: -6px;
+    margin-left: 4px;
+
 }
 
 .js-injection--current-profile-quality-text {
@@ -65,7 +77,6 @@
     position: absolute;
     width: 50px;
     height: 50px;
-
 }
 
 .js-injection--current-profile-engrave-icon {

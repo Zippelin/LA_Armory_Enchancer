@@ -163,20 +163,39 @@ class ActiveProfile {
         }
     }
 
+    #getLineWidthByQuality(quality) {
+        const itemDefaultWidth = 41
+        const calcWidth =  Math.round((quality/100) * itemDefaultWidth)
+        return {
+            "filled": calcWidth.toString() + "px",
+            "remainder": (itemDefaultWidth - calcWidth).toString() + "px"
+        }
+    }
+
     #createCurrentProfileInjection(quality){
+        
         const wrapper = document.createElement('div')
         wrapper.classList.add('js-injection--current-profile-quality-wrapper')
 
+        const linesWidth = this.#getLineWidthByQuality(quality)
+        
+        const linesWrapper = document.createElement('div')
+        linesWrapper.classList.add('js-injection--current-profile-quality-lines-wrapper')
+
         const qualityLine = document.createElement('div')
         qualityLine.style.background = this.#getColorByQuality(quality)
-        qualityLine.classList.add('js-injection--current-profile-quality-line')
+        qualityLine.style.width = linesWidth.filled
+        qualityLine.classList.add(
+            'js-injection--current-profile-quality-line', 
+            )
 
         const qualityText = document.createElement('div')
         qualityText.classList.add('js-injection--current-profile-quality-text')
         qualityText.innerText = quality
 
-        wrapper.appendChild(qualityText)
+        wrapper.appendChild(linesWrapper)
         wrapper.appendChild(qualityLine)
+        wrapper.appendChild(qualityText)
 
         return wrapper
     }
