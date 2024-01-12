@@ -118,7 +118,7 @@ class ImbuedProfile {
 
 class ActiveProfile {
     #regexProfile = /.*<script type="text\/javascript">[\S\s]*Profile = (?<profileData>\{[\S\s]+\});\n<\/script>/
-    #KOREAN_CDN_BASE_URL = 'https://cdn-lostark.game.onstove.com/'
+    #CDN_BASE_URL = 'https://static.monopoly.la.gmru.net/'
 
     constructor(text) {
         this.profile = this.#getProfile(text)
@@ -258,7 +258,7 @@ class ActiveProfile {
     #getEngraveIconPath(engraveName) {
         for (let engrave in this.profile.Engrave) {
             if (this.profile.Engrave[engrave].Element_000.value.toLowerCase().trim() == engraveName.toLowerCase().trim()) {
-                return this.#KOREAN_CDN_BASE_URL + this.profile.Engrave[engrave].Element_001.value.slotData.iconPath
+                return this.#CDN_BASE_URL + this.profile.Engrave[engrave].Element_001.value.slotData.iconPath
             }
         }
         return ''
