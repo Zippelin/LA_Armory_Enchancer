@@ -98,3 +98,45 @@
 .js-injection--current-profile-engrave-wrapper {
     border-bottom: 1px solid #e4bb2725;
 }
+
+.js-injection--current-profile-elixirs-wrapper {
+    width: 200px !important;
+    position: absolute;
+    margin-right: -10px;
+    display: list-item !important;
+    text-align: left;
+    padding-top: 3px;
+}
+
+
+.js-injection--current-profile-elixirs-dot {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;   
+    border: 1px solid #ffeeaf;
+    font-size: 10px;
+    font-weight: bold;
+    margin-right: 5px;
+    float: left;
+    text-align: center;
+    text-shadow: 1px 0 1px #000;
+}
+
+.js-injection--current-profile-elixirs-content {
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block !important;
+}
+
+.js-injection--popup-wrapper {
+    position: absolute;
+    padding: 10px;
+}
+
+.js-injection--popup-content {
+    background: #2a2c35;
+    padding: 10px;
+    position: relative;
+    pointer-events: none;
+    font-size: 13px !important;
+}

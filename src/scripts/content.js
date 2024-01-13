@@ -35,7 +35,7 @@ class ImbuedProfile {
         return matches[1]
     }
     
-    query() {
+    inject() {
         fetch(
             this.#BASE_ARMORY_URL + this.name
         ).then(
@@ -115,6 +115,49 @@ class ImbuedProfile {
     }
 }
 
+/*
+    Всплывающее меню
+*/
+class Popup {
+    constructor() {
+        this.dom = document.createElement('div')
+        this.content = document.createElement('div')
+        this.content.classList.add('js-injection--popup-content')
+        this.dom.classList.add('js-injection--popup-wrapper')
+        this.dom.style.visibility = 'hidden'
+        this.dom.appendChild(this.content)
+        this.isMouseOver = false
+        this.externalCallToHide = false
+        this.dom.onmouseout = this.#hidePopupHadler(this.dom)
+    }
+
+    inject() {
+        document.getElementById('lostark-wrapper').appendChild(this.dom)
+    }
+
+
+    #hidePopupHadler(popup) {
+        return function() {
+            popup.style.visibility = 'hidden'
+            popup.children[0].removeChild(popup.children[0].children[0])
+        }
+
+    }
+
+    showFor(domElement, content) {
+        if (this.content.children.length > 0) {
+            this.content.removeChild(this.content.children[0])
+        }
+        this.isMouseOver = true
+        this.content.appendChild(content)
+        const coords = domElement.getBoundingClientRect()
+
+        this.dom.style.left = (coords.left + window.scrollX).toString() + "px"
+        this.dom.style.top = ((coords.top + window.scrollY) - 32).toString() + "px"
+        this.dom.style.visibility = 'visible'
+    }
+}
+
 
 class ActiveProfile {
     #regexProfile = /.*<script type="text\/javascript">[\S\s]*Profile = (?<profileData>\{[\S\s]+\});\n<\/script>/
@@ -122,6 +165,8 @@ class ActiveProfile {
 
     constructor(text) {
         this.profile = this.#getProfile(text)
+        this.popup = new Popup()
+        this.popup.inject()
     }
 
     #getProfile(text) {
@@ -152,6 +197,44 @@ class ActiveProfile {
         }
     }
 
+    #getColorByElixirLevel(elixirLevel) {
+        switch (true) {
+            case elixirLevel === 0:
+                return {
+                    background: 'rgba(247,255,255,255)',
+                    color: 'rgba(0,0,0,255)'
+                }
+            case elixirLevel === 1:
+                return {
+                    background: 'rgba(247,255,255,255)',
+                    color: 'rgba(0,0,0,255)'
+                }           
+            case elixirLevel === 2:
+                return {
+                    background: 'rgba(0,148,209,255)',
+                    color: 'rgba(255,255,255,255)'
+                }         
+            case elixirLevel === 3:
+                return {
+                    background: 'rgba(146,0,185,255)',
+                    color: 'rgba(255,255,255,255)'
+                }          
+            case elixirLevel === 4:
+                return {
+                    background: 'rgba(205,112,0,255)',
+                    color: 'rgba(255,255,255,255)' 
+                }       
+            case elixirLevel === 5:
+                return {
+                    background: 'rgba(194,56,0,255)',
+                    color: 'rgba(255,255,255,255)'
+                }
+        }
+    }
+
+    /*
+        Внедрение элементов для вещей
+    */
     #injectEquipment() {
         if (this.profile) {
             for (let itemName in this.profile.Equip) {
@@ -291,6 +374,129 @@ class ActiveProfile {
         }
     }
 
+    /*
+        Внедрение элементов для элексиров
+    */
+    #injectGearsElixirs() {
+        const offsetX = 55
+        let dataSource
+        for (let itemId in this.profile.Equip) {
+            // Предположительно данные по элексирам могут быть только в элементах Element_007 или Element_008.
+            if (
+                this.profile.Equip[itemId].Element_007 && 
+                this.profile.Equip[itemId].Element_007.value &&
+                this.profile.Equip[itemId].Element_007.value.Element_000 &&
+                this.profile.Equip[itemId].Element_007.value.Element_000.contentStr
+                ) 
+            {   
+                dataSource = this.profile.Equip[itemId].Element_007.value.Element_000.contentStr
+
+            } else if (
+                this.profile.Equip[itemId].Element_008 && 
+                this.profile.Equip[itemId].Element_008.value &&
+                this.profile.Equip[itemId].Element_008.value.Element_000 &&
+                this.profile.Equip[itemId].Element_008.value.Element_000.contentStr
+            ) {
+                dataSource = this.profile.Equip[itemId].Element_008.value.Element_000.contentStr
+            } else {
+                continue
+            }
+
+            const domElement = document.querySelector('[data-item=' + '"' + itemId + '"]' )
+            const parsedElixirData = this.#parseElixirData(dataSource)
+            const style = window.getComputedStyle(domElement)
+            const injectingElement = this.#createCurrentProfileElixirInjection(parsedElixirData,)
+            injectingElement.style.top = style.top
+
+            injectingElement.style.left = (parseInt(style.left.slice(0, -2)) + offsetX).toString() + "px"
+            domElement.insertAdjacentElement('afterend', injectingElement)
+        }
+    }
+
+    /*
+        Хендлер для всплывающего меню
+    */
+    #showPopupHadler(forDom, popup, content) {
+        return function() {
+            popup.showFor(forDom, content)
+        }
+
+    }
+
+    /*
+        Создание родительского элемента для элексиров на броне
+    */
+    #createCurrentProfileElixirInjection(elixirsData) {
+        const wrapper = document.createElement('div')
+        wrapper.classList.add('js-injection--current-profile-elixirs-wrapper')
+        
+        for (let i in elixirsData) {
+            const content = document.createElement('div')
+            content.classList.add('js-injection--current-profile-elixirs-content')
+
+            const elixirDot = document.createElement('div')
+            elixirDot.classList.add('js-injection--current-profile-elixirs-dot')
+            const colors = this.#getColorByElixirLevel(parseInt(elixirsData[i].elixirLevel))
+
+            elixirDot.style.background = colors.background
+            elixirDot.style.color = colors.color
+            elixirDot.innerHTML = elixirsData[i].elixirLevel
+    
+            content.appendChild(elixirDot)
+            content.appendChild(this.#createElixirContent(elixirsData[i]))
+
+            const spacer = document.createElement('div')
+            wrapper.appendChild(content)
+            wrapper.appendChild(spacer)
+        }
+        return wrapper
+    }
+
+    /*
+        Создание строки под элексир с его описаниеи и уровнем
+    */
+    #createElixirContent(elixirData) {
+        const wrapper = document.createElement('div')
+        wrapper.classList.add('js-injection--current-profile-elixirs-content')
+
+        const content = document.createElement('div')
+
+        const elixirName = document.createElement('span')
+        elixirName.innerHTML = elixirData.elixirName
+        elixirName.style.color="#fff"      
+        elixirName.style.marginRight = '5px'     
+
+        content.appendChild(elixirName)
+
+        wrapper.appendChild(content)
+        return wrapper
+    }
+
+    /*
+        Парсим элексир и разбиваем на компоненты
+    */
+    #parseElixirData(elixirsProfileList) {
+        const regex = /<FONT.*>(?<itemType>\[.*?\])<\/FONT>(?<exilirName>.+?)<FONT.+>(?<elixirLevel>\d+)/
+        let result = []
+        for (let id in elixirsProfileList) {
+            const match = elixirsProfileList[id].contentStr.match(regex)
+            if (match && match.length === 4) {
+                result.push(
+                    {
+                        itemType: match.groups.itemType.trim(),
+                        elixirName: match.groups.exilirName.trim(),
+                        elixirLevel: match.groups.elixirLevel.trim()
+                    }
+                )
+            }
+        }
+        return result
+    }
+
+
+    /*
+        Внедрение элементов для графировок
+    */
     #injectEngraves() {
         this.#flatterEngraveWrapper()
         this.#disableEngravesPaginator()
@@ -298,7 +504,8 @@ class ActiveProfile {
 
     inject() {
         this.#injectEquipment()
-        this.#injectEngraves( )
+        this.#injectEngraves()
+        this.#injectGearsElixirs()
        
     }
 }
@@ -315,7 +522,7 @@ function processImbuedProfile() {
                     buttons[buttonIndex].getElementsByTagName("span")[0].innerHTML,
                     buttons[buttonIndex]
                 )
-                profile.query()
+                profile.inject()
                 profiles.push(
                     profile
                 )
