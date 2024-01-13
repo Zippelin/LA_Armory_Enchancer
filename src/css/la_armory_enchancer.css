@@ -126,6 +126,7 @@
     font-size: 12px;
     font-weight: bold;
     display: inline-block !important;
+    text-shadow: 2px 0 2px #000;
 }
 
 .js-injection--popup-wrapper {
@@ -139,4 +140,18 @@
     position: relative;
     pointer-events: none;
     font-size: 13px !important;
+}
+
+.slot1, .slot2, .slot3, .slot4, .slot5, .slot6, .slot14, .slot15{
+    left: 5px !important;
+}
+
+.slot7, .slot8, .slot9, .slot10, .slot11, .slot12, .slot13{
+    left: 555px !important;
+}
+
+.profile-equipment__character {
+    justify-content: right !important;
+    padding-right: 30px;
+
 }
