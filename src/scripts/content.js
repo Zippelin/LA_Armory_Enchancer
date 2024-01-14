@@ -411,6 +411,11 @@ class ActiveProfile {
             injectingElement.style.left = (parseInt(style.left.slice(0, -2)) + offsetX).toString() + "px"
             domElement.insertAdjacentElement('afterend', injectingElement)
         }
+        
+        if (dataSource) {
+            const profileEq = document.querySelector('.profile-equipment__character')
+            profileEq.classList.add('profile-equipment__character-override')
+        }
     }
 
     /*
@@ -502,11 +507,32 @@ class ActiveProfile {
         this.#disableEngravesPaginator()
     }
 
+    #injectProfilePic() {
+        const backgrounImage = document.createElement('img')
+        backgrounImage.classList.add('profile-equipment__character')
+        var extensionId = chrome.runtime.id;
+        backgrounImage.src = 'chrome-extension://' + extensionId + '/media/img/profile_bg.png'
+        backgrounImage.classList.add('js-injection--profile-background')
+        
+        const wrapper = document.querySelector('.profile-equipment__character')
+        const shadow = wrapper.children[0].cloneNode()
+        const shadow2 = wrapper.children[0].cloneNode()
+        wrapper.children[0].style.zIndex=3
+
+        shadow.classList.add('js-injection--profile-image-shadow-01')
+        shadow2.classList.add('js-injection--profile-image-shadow-02')
+       
+        wrapper.appendChild(backgrounImage)
+        wrapper.appendChild(shadow)
+        wrapper.appendChild(shadow2)
+
+    }
+
     inject() {
         this.#injectEquipment()
         this.#injectEngraves()
         this.#injectGearsElixirs()
-       
+        this.#injectProfilePic()
     }
 }
 
