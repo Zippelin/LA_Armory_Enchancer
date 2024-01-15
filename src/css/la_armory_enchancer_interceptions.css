@@ -25,5 +25,5 @@
 
 /* Выносим на передний план экипировку, изобрание было выше его */
 .profile-equipment__slot {
-    z-index: 5 !important;
+    z-index: 6 !important;
 }
