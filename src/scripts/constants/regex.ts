@@ -1,0 +1,1 @@
+export const SOME_TEGEX: RegExp = /123/

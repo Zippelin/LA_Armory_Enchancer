@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "LostArk Armory Enchancer",
     "description": "Расширение функциональности сайта Оруженой для LostArk",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "content_scripts": [
         {
             "js": [
@@ -18,8 +18,10 @@
         }
     ],
     "background": {
-        "service_worker": "scripts/background.js"
+        "service_worker": "scripts/bg.js",
+        "type": "module"
     },
+    "permissions": ["activeTab"],
     "icons": {
         "16": "media/icons/16.png",
         "32": "media/icons/32.png",
