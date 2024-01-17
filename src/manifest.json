@@ -17,10 +17,7 @@
             ]
         }
     ],
-    "background": {
-        "service_worker": "scripts/bg.js",
-        "type": "module"
-    },
+    "background": {},
     "permissions": ["activeTab"],
     "icons": {
         "16": "media/icons/16.png",
