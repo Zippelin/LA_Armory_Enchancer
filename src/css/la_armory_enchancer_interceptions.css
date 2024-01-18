@@ -22,8 +22,3 @@
     justify-content: right !important;
     padding-right: 30px !important;
 }
-
-/* Выносим на передний план экипировку, изобрание было выше его */
-.profile-equipment__slot {
-    z-index: 6 !important;
-}

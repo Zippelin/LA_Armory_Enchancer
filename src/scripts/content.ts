@@ -1,29 +1,17 @@
-import {SOME_TEGEX} from "./constants/regex"
-import {someCoolFunc} from "./loaders/loader"
+import {injectCharacterGearsPowerBulk} from "./injectors/characters"
+import {injectProfile} from "./injectors/profile"
 
-function start(): void {
-    let work = someCoolFunc('abc')
-
-
-
-    fetch(
-        'https://example.com'
-    ).then((val) => {
-        callbackify(getSome(val))
-    })
-
-
-    console.log(SOME_TEGEX, work);
-    
+function processCharacters() {
+    const serversList = document.querySelectorAll(".profile-character-list__char")
+    injectCharacterGearsPowerBulk(serversList)
 }
 
-function getSome(val: Response): Number {
-    return val.status
+function processProfile() {
+    const html = document.querySelector("html")
+    if (html) {
+        injectProfile(html.innerHTML)
+    }
 }
 
-function callbackify(bum: Number) {
-    console.log(bum);
-    
-}
-
-start()
+processCharacters()
+processProfile()

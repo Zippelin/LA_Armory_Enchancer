@@ -161,7 +161,7 @@
 }
 
 .profile-equipment__character::after {
-    z-index: 5 !important;
+    z-index: 2 !important;
     width: 100%;
     height: 100%;
     position: absolute;
@@ -175,7 +175,7 @@
 
 .js-injection--profile-image-shadow-02 {
     position: absolute !important;
-    z-index: 2 !important;
+    z-index: 1 !important;
     filter: grayscale(100%);
     margin-right: -100px;
     margin-top: -100px;
