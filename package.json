@@ -1,0 +1,40 @@
+{
+  "name": "lostark-armory-enchancer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/scripts/content.ts",
+  "license": "AGPL-version-3.0",
+  "private": false,
+  "engines": {
+    "node": ">= 14.0.0",
+    "npm": ">= 6.0.0"
+  },
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "bugs": "",
+  "keywords": [],
+  "author": {
+    "name": "Zippelin",
+    "email": "",
+    "url": ""
+  },
+  "contributors": [],
+  "scripts": {
+    "develop": "webpack-dev-server --mode development",
+    "clear": "rm -rf dist",
+    "pack" : "webpack --mode production",
+    "copy-assets": "rsync -av --exclude 'scripts' src/ dist/",
+    "build": "npm run clear && npm run pack && npm run copy-assets"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.256",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  }
+}
