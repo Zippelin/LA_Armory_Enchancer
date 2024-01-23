@@ -3,8 +3,9 @@ import {
     MAX_GEAR_POWER, 
     CLASS_ICON_URL, 
     SCRIPT_PROFILE, 
-    ELIXIR_DATA
+    ELIXIR_DATA,
 } from "./constants/regex"
+import {ElixirDataType, ProfileType} from "./types"
 
 
 export function getCurrentGearsPower(text: string): string {
@@ -31,18 +32,17 @@ export function getClassIconUrl(text: string): string {
     return ""
 }
 
-export function getProfileData(text: string): any {
+export function getParsedProfileData(text: string): ProfileType | null {
     const match = text.match(SCRIPT_PROFILE)
-    let result = {}
+    let result = null
     if (match) {
         result = JSON.parse(match[1])
     }
     return result
 }
 
-export function getElixirData(text: string): any {
+export function getElixirData(text: string): ElixirDataType | null {
     const match = text.match(ELIXIR_DATA)
-    let result = {}
     if (match && match.groups && match.length === 4) {
         return  {
             itemType: match.groups.itemType.trim(),
@@ -51,4 +51,12 @@ export function getElixirData(text: string): any {
         }
     }
     return null
+}
+
+export function getOrderNumber(text: string): string {
+    const match = text.match(/\d+/)
+    if (match) {
+        return match[0]
+    }
+    return '0'
 }

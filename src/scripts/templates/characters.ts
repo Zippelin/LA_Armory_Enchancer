@@ -1,3 +1,5 @@
+import {SortingOptionType} from "../types"
+
 export function getClassIconTemplate(iconUrl: string): HTMLImageElement {
     const img = document.createElement('img')
     img.src = iconUrl
@@ -45,4 +47,44 @@ export function getGearPowerWrapperTemplate(): HTMLDivElement {
         )
     gearsPowerLevel.appendChild(loadingIndication)
     return gearsPowerLevel
+}
+
+export function getSortingWrapperTemplate(sortingOptions: SortingOptionType[], sortingDom: HTMLDivElement): HTMLSpanElement {
+    const wrapper = document.createElement('span')
+    wrapper.classList.add('js-injection--sorter-wrapper')
+
+    const title = document.createElement('span')
+    title.classList.add('js-injection--sorter-title')
+    title.innerHTML = 'Сортировка:'
+    title.style.marginRight = '10px'
+
+    wrapper.appendChild(title)
+    
+    for (let i = 0; i < sortingOptions.length; i++) {
+        const buttonWrapper = document.createElement('span')
+
+        const button = document.createElement('button')
+        button.innerHTML = sortingOptions[i].label
+        button.onclick = sortingOptions[i].callback(sortingDom)
+
+        buttonWrapper.appendChild(button)
+        if (i < sortingOptions.length) {
+            buttonWrapper.style.marginRight = '10px'
+        }
+        if (sortingOptions[i].isCurrent) {
+            buttonWrapper.classList.add('js-injection--sorter-button-active')
+        } else {
+            buttonWrapper.classList.add('js-injection--sorter-button')
+        }
+        wrapper.append(buttonWrapper)
+        
+    }
+    return wrapper
+}
+
+export function getOrderNumberTemplate(orderNumber: number): HTMLDivElement {
+    const wrapper = document.createElement('div')
+    wrapper.innerHTML = "[" + orderNumber.toString()  + "]"
+    wrapper.classList.add('js-injection--character-order')
+    return wrapper
 }

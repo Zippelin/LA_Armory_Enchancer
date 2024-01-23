@@ -1,9 +1,9 @@
-import {injectCharacterGearsPowerBulk} from "./injectors/characters"
+import {injectCharacterGearsPowerBulk, injectSortingButtonsBulk} from "./injectors/characters"
 import {injectProfile} from "./injectors/profile"
 
 function processCharacters() {
-    const serversList = document.querySelectorAll(".profile-character-list__char")
-    injectCharacterGearsPowerBulk(serversList)
+    injectCharacterGearsPowerBulk()
+    injectSortingButtonsBulk()
 }
 
 function processProfile() {

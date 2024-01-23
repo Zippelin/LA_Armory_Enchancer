@@ -39,9 +39,9 @@ export function getProfileEqipmentItemTemplate(quality: number): HTMLDivElement 
 }
 
 
-    /*
-        Создание родительского элемента для элексиров на броне
-    */
+/*
+    Создание родительского элемента для элексиров на броне
+*/
 export function getProfileElixirWrapperTemplate(elixirsData: any): HTMLDivElement {
     /*
         Создание строки под элексир с его описаниеи и уровнем

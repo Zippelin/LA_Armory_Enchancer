@@ -1,8 +1,9 @@
 import {AMORY_URL} from "./constants/urls"
+import {getAmroyCharaccterUrl} from "./tools/url"
 
-export function getProfileData(profileName: string, callback: Function) {
+export function getCharacterData(characterName: string, callback: Function) {
     fetch(
-        AMORY_URL + profileName
+        getAmroyCharaccterUrl(characterName)
     ).then(
         (response) => {
             response.text().then((text) => {
