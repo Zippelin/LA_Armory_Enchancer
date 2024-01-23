@@ -1,74 +1,72 @@
- import {UrlSource, CharactersSortBy} from "./constants/vars"
- 
- export interface ProgressBarData {
-    filled: string,
-    remainder: string
+import { UrlSource, CharactersSortBy } from "./constants/vars";
+
+export interface ProgressBarData {
+    filled: string;
+    remainder: string;
 }
 
 export interface ElixirColorStyle {
-    background: string
-    color: string
+    background: string;
+    color: string;
 }
 
 export interface ElixirDataType {
-    itemType: string
-    elixirName: string
-    elixirLevel: string
+    itemType: string;
+    elixirName: string;
+    elixirLevel: string;
 }
 
 export interface ProfileType {
-    Equip: ProfileEquipType
-    Engrave: {}
+    Equip: ProfileEquipType;
+    Engrave: {};
 }
 
 export interface ProfileEquipType {
     [itemCode: string]: {
         Element_001: {
-            type: string
+            type: string;
             value: {
-                qualityValue: number
-            },
-            
-        },
+                qualityValue: number;
+            };
+        };
         Element_007: {
             value: {
                 Element_000: {
                     contentStr: {
                         [Element_000: string]: {
-                            contentStr: string
-                        }
-                    }
-                }
-            }
-        },            
+                            contentStr: string;
+                        };
+                    };
+                };
+            };
+        };
         Element_008: {
             value: {
                 Element_000: {
-                    contentStr: {                    
+                    contentStr: {
                         [Element_000: string]: {
-                            contentStr: string
-                        }
-                    }
-                }
-            },
-        }
-    }
+                            contentStr: string;
+                        };
+                    };
+                };
+            };
+        };
+    };
 }
 
 export interface EngraveIconPathType {
-    iconName: string,
-    engrageName: string
+    iconName: string;
+    engrageName: string;
 }
 
-
 export interface IconPathType {
-    urlSource: UrlSource
-    url: string
+    urlSource: UrlSource;
+    url: string;
 }
 
 export interface SortingOptionType {
-    label: string
-    sortByType: CharactersSortBy
-    callback: Function
-    isCurrent: boolean
+    label: string;
+    sortByType: CharactersSortBy;
+    callback: Function;
+    isCurrent: boolean;
 }

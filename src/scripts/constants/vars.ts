@@ -6,5 +6,5 @@ export enum UrlSource {
 
 export enum CharactersSortBy {
     CREATION = 0,
-    GEARS_POWER = 1
+    GEARS_POWER = 1,
 }

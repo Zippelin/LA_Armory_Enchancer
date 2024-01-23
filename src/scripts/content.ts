@@ -1,17 +1,20 @@
-import {injectCharacterGearsPowerBulk, injectSortingButtonsBulk} from "./injectors/characters"
-import {injectProfile} from "./injectors/profile"
+import {
+    injectCharacterGearsPowerBulk,
+    injectSortingButtonsBulk,
+} from "./injectors/characters";
+import { injectProfile } from "./injectors/profile";
 
 function processCharacters() {
-    injectCharacterGearsPowerBulk()
-    injectSortingButtonsBulk()
+    injectCharacterGearsPowerBulk();
+    injectSortingButtonsBulk();
 }
 
 function processProfile() {
-    const html = document.querySelector("html")
+    const html = document.querySelector("html");
     if (html) {
-        injectProfile(html.innerHTML)
+        injectProfile(html.innerHTML);
     }
 }
 
-processCharacters()
-processProfile()
+processCharacters();
+processProfile();
