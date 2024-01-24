@@ -101,11 +101,6 @@ function injectEngraves(engraves: any): void {
         if (match && match.length === 3) {
             engraveDome.getElementsByTagName("span")[0].innerHTML = match[1];
 
-            console.log(
-                NegativeEngraves.includes(match[1].trim().toLowerCase())
-            );
-            console.log(match[1].trim().toLowerCase());
-
             if (NegativeEngraves.includes(match[1].trim().toLowerCase())) {
                 engraveDome.getElementsByTagName("span")[0].style.color = "red";
             }
