@@ -377,4 +377,20 @@ export const ENGRAVES_ICONS: Array<EngraveIconPathType> = [
         iconName: "ability_276.png",
         engrageName: "Экстаз",
     },
+    {
+        iconName: "ability_221.png",
+        engrageName: "Медлительность",
+    },
+    {
+        iconName: "ability_219.png",
+        engrageName: "Износ",
+    },
+    {
+        iconName: "ability_220.png",
+        engrageName: "Миролюбие",
+    },
+    {
+        iconName: "ability_218.png",
+        engrageName: "Ржавчина",
+    },
 ];

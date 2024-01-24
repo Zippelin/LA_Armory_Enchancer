@@ -94,7 +94,7 @@ export function injectSortingButtonsBulk() {
         // устанавливаем цель сортировки
         function sorterSelector(sortingDom: HTMLDivElement) {
             function sortBy(source: PointerEvent) {
-                // выбиракем заголовок с кнопками сортировки
+                // выбираем заголовок с кнопками сортировки
                 const headerWithSortButton = sortingDom.previousSibling
                     ?.previousSibling as HTMLElement;
 
@@ -184,25 +184,25 @@ export function injectSortingButtonsBulk() {
 
     const sortingOptions: SortingOptionType[] = [
         {
-            label: "новее",
+            label: "новые",
             sortByType: CharactersSortBy.CREATION,
             callback: sorterWrapper(CharactersSortBy.CREATION, -1),
             isCurrent: true,
         },
         {
-            label: "старее",
+            label: "старые",
             sortByType: CharactersSortBy.CREATION,
             callback: sorterWrapper(CharactersSortBy.CREATION, 1),
             isCurrent: false,
         },
         {
-            label: "сильнее",
+            label: "сильные",
             sortByType: CharactersSortBy.GEARS_POWER,
             callback: sorterWrapper(CharactersSortBy.GEARS_POWER, 1),
             isCurrent: false,
         },
         {
-            label: "слабее",
+            label: "слабые",
             sortByType: CharactersSortBy.GEARS_POWER,
             callback: sorterWrapper(CharactersSortBy.GEARS_POWER, -1),
             isCurrent: false,
