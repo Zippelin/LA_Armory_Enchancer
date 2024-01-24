@@ -5,9 +5,7 @@
     "version": "0.1.1",
     "content_scripts": [
         {
-            "js": [
-                "scripts/content.js"
-            ],
+            "js": ["scripts/content.js"],
             "css": [
                 "css/la_armory_enchancer.css",
                 "css/la_armory_enchancer_interceptions.css"
@@ -27,7 +25,7 @@
     },
     "web_accessible_resources": [
         {
-            "resources": [ "media/img/*.png"],
+            "resources": ["media/img/*.png"],
             "matches": ["https://*/*"]
         }
     ]
