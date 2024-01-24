@@ -8,3 +8,10 @@ export enum CharactersSortBy {
     CREATION = 0,
     GEARS_POWER = 1,
 }
+
+export const NegativeEngraves = [
+    "медлительность",
+    "износ",
+    "миролюбие",
+    "ржавчина",
+];

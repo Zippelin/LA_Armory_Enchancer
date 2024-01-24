@@ -8,7 +8,7 @@ import {
     getEngraveIconPathByNameFromLib,
     getEngraveIconPathByName,
 } from "../tools/url";
-import { UrlSource } from "../constants/vars";
+import { UrlSource, NegativeEngraves } from "../constants/vars";
 
 export function injectProfile(pageHTML: string): void {
     const parsedProfile = getParsedProfileData(pageHTML);
@@ -100,6 +100,15 @@ function injectEngraves(engraves: any): void {
         const match = engraveText.match(regexEngraveLevel);
         if (match && match.length === 3) {
             engraveDome.getElementsByTagName("span")[0].innerHTML = match[1];
+
+            console.log(
+                NegativeEngraves.includes(match[1].trim().toLowerCase())
+            );
+            console.log(match[1].trim().toLowerCase());
+
+            if (NegativeEngraves.includes(match[1].trim().toLowerCase())) {
+                engraveDome.getElementsByTagName("span")[0].style.color = "red";
+            }
             const levelSpan = document.createElement("span");
             levelSpan.innerText = match[2];
             levelSpan.classList.add(
