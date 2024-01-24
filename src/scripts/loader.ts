@@ -1,7 +1,7 @@
-import { getAmroyCharaccterUrl } from "./tools/url";
+import { getArmoryCharacterUrl } from "./tools/url";
 
 export function getCharacterData(characterName: string, callback: Function) {
-    fetch(getAmroyCharaccterUrl(characterName)).then((response) => {
+    fetch(getArmoryCharacterUrl(characterName)).then((response) => {
         response.text().then((text) => {
             callback(text);
         });

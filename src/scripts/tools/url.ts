@@ -22,6 +22,6 @@ export function getEngraveIconPathByName(engraveName: string): string {
     return CDN_URL + engraveName;
 }
 
-export function getAmroyCharaccterUrl(characterName: string): string {
+export function getArmoryCharacterUrl(characterName: string): string {
     return AMORY_URL + characterName;
 }

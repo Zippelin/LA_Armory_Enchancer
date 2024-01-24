@@ -6,5 +6,5 @@ export const CLASS_ICON_URL: RegExp =
     /.+<img class="profile-character-info__img" src="(?<iconPath>.+?)"/;
 export const SCRIPT_PROFILE: RegExp =
     /.*<script type="text\/javascript">[\S\s]*Profile = (?<profileData>\{[\S\s]+\});\n<\/script>/;
-export const ELIXIR_DATA =
+export const ELIXIR_DATA: RegExp =
     /<FONT.*>(?<itemType>\[.*?\])<\/FONT>(?<exilirName>.+?)<FONT.+>(?<elixirLevel>\d+)/;
