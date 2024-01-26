@@ -1,3 +1,4 @@
+import { text } from "body-parser";
 import {
     INJECTOR_CHARACTER_ORDER,
     INJECTOR_CLASS_ICON,
@@ -12,50 +13,42 @@ import {
     INJECTOR_SORTER_WRAPPER,
 } from "../constants/css";
 import { SortingOptionType } from "../types";
+import { createButton, createDiv, createImg, createSpan } from "./generator";
 
 export function getClassIconTemplate(iconUrl: string): HTMLImageElement {
-    const img = document.createElement("img");
-    img.src = iconUrl;
-    img.style.height = "20px";
-    img.style.width = "20px";
-    img.classList.add(INJECTOR_CLASS_ICON);
-    return img;
+    return createImg({
+        src: iconUrl,
+        classes: [INJECTOR_CLASS_ICON],
+        style: {
+            height: "20px",
+            width: "20px",
+        },
+    });
 }
 
 export function getGearPowerTitleTemplate(): HTMLDivElement {
-    const header = document.createElement("div");
-    header.innerHTML = "Снаряжение:";
-    header.classList.add(INJECTOR_GEARS_POWER_HEADER);
-    return header;
+    return createDiv({ text: "Снаряжение:", classes: [INJECTOR_GEARS_POWER_HEADER] });
 }
 
 export function getCurrrentGearPowerTemplate(gearPower: string): HTMLDivElement {
-    const currentPower = document.createElement("div");
-    currentPower.innerHTML = gearPower;
-    currentPower.classList.add(INJECTOR_GEARS_POWER_MAJOR);
-    return currentPower;
+    return createDiv({ text: gearPower, classes: [INJECTOR_GEARS_POWER_MAJOR] });
 }
 
 export function getMaxGearPowerTemplate(gearPower: string): HTMLDivElement {
-    const wrapper = document.createElement("div");
-    wrapper.classList.add(INJECTOR_GEARS_POWER_MINOR);
-    const splitter = document.createElement("div");
-    splitter.innerHTML = "/";
-    splitter.classList.add(INJECTOR_GEARS_POWER_MINOR);
-    const maxPower = document.createElement("div");
-    maxPower.innerHTML = gearPower;
-    maxPower.classList.add(INJECTOR_GEARS_POWER_MINOR);
+    const wrapper = createDiv({ classes: [INJECTOR_GEARS_POWER_MINOR] });
+    const splitter = createDiv({ text: "/", classes: [INJECTOR_GEARS_POWER_MINOR] });
+    const maxPower = createDiv({ text: gearPower, classes: [INJECTOR_GEARS_POWER_MINOR] });
     wrapper.appendChild(splitter);
     wrapper.appendChild(maxPower);
     return wrapper;
 }
 
 export function getGearPowerWrapperTemplate(): HTMLDivElement {
-    const gearsPowerLevel = document.createElement("div");
-    gearsPowerLevel.classList.add(INJECTOR_GEARS_POWER_WRAPPER);
-    const loadingIndication = document.createElement("span");
-    loadingIndication.innerHTML = "загружаю...";
-    loadingIndication.classList.add(INJECTOR_GEARS_POWER_PENDING);
+    const gearsPowerLevel = createDiv({ classes: [INJECTOR_GEARS_POWER_WRAPPER] });
+    const loadingIndication = createSpan({
+        text: "загружаю...",
+        classes: [INJECTOR_GEARS_POWER_PENDING],
+    });
     gearsPowerLevel.appendChild(loadingIndication);
     return gearsPowerLevel;
 }
@@ -64,22 +57,21 @@ export function getSortingWrapperTemplate(
     sortingOptions: SortingOptionType[],
     sortingDom: HTMLDivElement
 ): HTMLSpanElement {
-    const wrapper = document.createElement("span");
-    wrapper.classList.add(INJECTOR_SORTER_WRAPPER);
-
-    const title = document.createElement("span");
-    title.classList.add(INJECTOR_SORTER_TITLE);
-    title.innerHTML = "Сортировка:";
-    title.style.marginRight = "10px";
-
+    const wrapper = createSpan({ classes: [INJECTOR_SORTER_WRAPPER] });
+    const title = createSpan({
+        text: "Сортировка:",
+        classes: [INJECTOR_SORTER_TITLE],
+        style: { marginRight: "10px" },
+    });
     wrapper.appendChild(title);
 
     for (let i = 0; i < sortingOptions.length; i++) {
-        const buttonWrapper = document.createElement("span");
+        const buttonWrapper = createSpan();
 
-        const button = document.createElement("button");
-        button.innerHTML = sortingOptions[i].label;
-        button.onclick = sortingOptions[i].callback(sortingDom);
+        const button = createButton({
+            text: sortingOptions[i].label,
+            callbacks: { click: sortingOptions[i].callback(sortingDom) },
+        });
 
         buttonWrapper.appendChild(button);
         if (i < sortingOptions.length) {
@@ -96,8 +88,8 @@ export function getSortingWrapperTemplate(
 }
 
 export function getOrderNumberTemplate(orderNumber: number): HTMLDivElement {
-    const wrapper = document.createElement("div");
-    wrapper.innerHTML = "[" + orderNumber.toString() + "]";
-    wrapper.classList.add(INJECTOR_CHARACTER_ORDER);
-    return wrapper;
+    return createDiv({
+        text: "[" + orderNumber.toString() + "]",
+        classes: [INJECTOR_CHARACTER_ORDER],
+    });
 }

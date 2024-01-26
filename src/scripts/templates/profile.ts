@@ -9,6 +9,7 @@ import {
     INJECTOR_PROFILE_QUALITY_PROGRESS_WRAPPER,
     INJECTOR_PROFILE_QUALITY_WRAPPER,
 } from "../constants/css";
+import { createDiv, createSpan } from "./generator";
 
 export function getProfileEqipmentItemTemplate(quality: number): HTMLDivElement {
     function _getProgressBar(_quality: number): ProgressBarData {
@@ -20,22 +21,24 @@ export function getProfileEqipmentItemTemplate(quality: number): HTMLDivElement 
         };
     }
 
-    const wrapper = document.createElement("div");
-    wrapper.classList.add(INJECTOR_PROFILE_QUALITY_WRAPPER);
+    const wrapper = createDiv({ classes: [INJECTOR_PROFILE_QUALITY_WRAPPER] });
 
     const linesWidth = _getProgressBar(quality);
 
-    const linesWrapper = document.createElement("div");
-    linesWrapper.classList.add(INJECTOR_PROFILE_QUALITY_PROGRESS_WRAPPER);
+    const linesWrapper = createDiv({ classes: [INJECTOR_PROFILE_QUALITY_PROGRESS_WRAPPER] });
 
-    const qualityLine = document.createElement("div");
-    qualityLine.style.background = getColorByQuality(quality);
-    qualityLine.style.width = linesWidth.filled;
-    qualityLine.classList.add(INJECTOR_PROFILE_QUALITY_PROGRESS);
+    const qualityLine = createDiv({
+        classes: [INJECTOR_PROFILE_QUALITY_PROGRESS],
+        style: {
+            background: getColorByQuality(quality),
+            width: linesWidth.filled,
+        },
+    });
 
-    const qualityText = document.createElement("div");
-    qualityText.classList.add(INJECTOR_PROFILE_QUALITY_NUMBER);
-    qualityText.innerText = quality.toString();
+    const qualityText = createDiv({
+        text: quality.toString(),
+        classes: [INJECTOR_PROFILE_QUALITY_NUMBER],
+    });
 
     wrapper.appendChild(linesWrapper);
     wrapper.appendChild(qualityLine);
@@ -52,15 +55,17 @@ export function getProfileElixirWrapperTemplate(elixirsData: any): HTMLDivElemen
         Создание строки под элексир с его описаниеи и уровнем
     */
     function createElixirContent(elixirData: any): HTMLDivElement {
-        const wrapper = document.createElement("div");
-        wrapper.classList.add(INJECTOR_PROFILE_ELIXIR_CONTENT);
+        const wrapper = createDiv({ classes: [INJECTOR_PROFILE_ELIXIR_CONTENT] });
 
-        const content = document.createElement("div");
+        const content = createDiv();
 
-        const elixirName = document.createElement("span");
-        elixirName.innerHTML = elixirData.elixirName;
-        elixirName.style.color = "#fff";
-        elixirName.style.marginRight = "5px";
+        const elixirName = createSpan({
+            text: elixirData.elixirName,
+            style: {
+                color: "#fff",
+                marginRight: "5px",
+            },
+        });
 
         content.appendChild(elixirName);
 
@@ -68,25 +73,26 @@ export function getProfileElixirWrapperTemplate(elixirsData: any): HTMLDivElemen
         return wrapper;
     }
 
-    const wrapper = document.createElement("div");
-    wrapper.classList.add(INJECTOR_PROFILE_ELIXIR_WRAPPER);
+    const wrapper = createDiv({ classes: [INJECTOR_PROFILE_ELIXIR_WRAPPER] });
 
     for (let i in elixirsData) {
-        const content = document.createElement("div");
-        content.classList.add(INJECTOR_PROFILE_ELIXIR_CONTENT);
-
-        const elixirDot = document.createElement("div");
-        elixirDot.classList.add(INJECTOR_PROFILE_ELIXIR_DOT);
         const colors = getColorByElixirLevel(parseInt(elixirsData[i].elixirLevel));
 
-        elixirDot.style.background = colors.background;
-        elixirDot.style.color = colors.color;
-        elixirDot.innerHTML = elixirsData[i].elixirLevel;
+        const content = createDiv({ classes: [INJECTOR_PROFILE_ELIXIR_CONTENT] });
+
+        const elixirDot = createDiv({
+            text: elixirsData[i].elixirLevel,
+            classes: [INJECTOR_PROFILE_ELIXIR_DOT],
+            style: {
+                background: colors.background,
+                color: colors.color,
+            },
+        });
 
         content.appendChild(elixirDot);
         content.appendChild(createElixirContent(elixirsData[i]));
 
-        const spacer = document.createElement("div");
+        const spacer = createDiv();
         wrapper.appendChild(content);
         wrapper.appendChild(spacer);
     }

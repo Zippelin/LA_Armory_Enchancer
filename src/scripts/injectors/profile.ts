@@ -30,6 +30,7 @@ import {
     INJECTOR_PROFILE_BG_SHADOW_02,
     INJECTOR_PROFILE_EQUIPMEN,
 } from "../constants/css";
+import { createImg, createSpan } from "../templates/generator";
 
 export function injectProfile(): void {
     const pageHTML: string | undefined = document.querySelector(HTML_TAG)?.innerHTML;
@@ -122,19 +123,23 @@ function injectEngraves(engraves: any): void {
             if (NegativeEngraves.includes(match[1].trim().toLowerCase())) {
                 engraveDome.getElementsByTagName("span")[0].style.color = "red";
             }
-            const levelSpan = document.createElement("span");
-            levelSpan.innerText = match[2];
-            levelSpan.classList.add(INJECTOR_ENGRAVE_LEVEL);
+            const levelSpan = createSpan({
+                text: match[2],
+                classes: [INJECTOR_ENGRAVE_LEVEL],
+            });
             engraveDome.appendChild(levelSpan);
             const engraveIncoPath = getEngraveIconPath(match[1]);
 
             if (engraveIncoPath.urlSource != UrlSource.NONE) {
                 engraveDome.getElementsByTagName("span")[0].style.fontWeight = "bold !important";
-                const img = document.createElement("img");
-                img.src = engraveIncoPath.url;
-                img.style.height = "20px";
-                img.style.width = "20px";
-                img.classList.add(INJECTOR_ENGRAVE_ICON);
+                const img = createImg({
+                    src: engraveIncoPath.url,
+                    classes: [INJECTOR_ENGRAVE_ICON],
+                    style: {
+                        height: "20px",
+                        width: "20px",
+                    },
+                });
                 engraveDome.insertBefore(img, engraveDome.getElementsByTagName("span")[0]);
                 return engraveIncoPath.urlSource;
             }
@@ -180,10 +185,10 @@ function injectEngraves(engraves: any): void {
 }
 
 function injectGB(): void {
-    const backgrounImage = document.createElement("img");
-    backgrounImage.classList.add(PROFILE_EQUIPMENT_WRAPPER);
-    backgrounImage.src = getExtensionResourceUrl(ExtensionResourceType.ProfileBackground);
-    backgrounImage.classList.add(INJECTOR_PROFILE_BG);
+    const backgrounImage = createImg({
+        src: getExtensionResourceUrl(ExtensionResourceType.ProfileBackground),
+        classes: [PROFILE_EQUIPMENT_WRAPPER, INJECTOR_PROFILE_BG],
+    });
 
     const wrapper = document.querySelector<HTMLElement>(".".concat(PROFILE_EQUIPMENT_WRAPPER));
     if (wrapper) {

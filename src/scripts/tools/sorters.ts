@@ -18,7 +18,9 @@ export function sorterCharsListDecorator(sortByType: number, descending: number)
             const headerWithSortButton = sortingDom.previousSibling?.previousSibling as HTMLElement;
 
             // снимаем активность с ранней кнопки
-            const activeButton = headerWithSortButton.querySelector(INJECTOR_SORTER_ACTIVE);
+            const activeButton = headerWithSortButton.querySelector(
+                ".".concat(INJECTOR_SORTER_ACTIVE)
+            );
             activeButton?.classList.remove(INJECTOR_SORTER_ACTIVE);
             activeButton?.classList.add(INJECTOR_SORTER_DEFAULT);
 
