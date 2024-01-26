@@ -1,3 +1,7 @@
+/*
+    Генераторы создания DOM элементом с свойствами
+*/
+
 export function createDiv({
     text = "",
     classes = [],
