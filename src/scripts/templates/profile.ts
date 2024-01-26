@@ -1,9 +1,16 @@
 import { ProgressBarData } from "../types";
 import { getColorByQuality, getColorByElixirLevel } from "../constants/colors";
+import {
+    INJECTOR_PROFILE_ELIXIR_CONTENT,
+    INJECTOR_PROFILE_ELIXIR_DOT,
+    INJECTOR_PROFILE_ELIXIR_WRAPPER,
+    INJECTOR_PROFILE_QUALITY_NUMBER,
+    INJECTOR_PROFILE_QUALITY_PROGRESS,
+    INJECTOR_PROFILE_QUALITY_PROGRESS_WRAPPER,
+    INJECTOR_PROFILE_QUALITY_WRAPPER,
+} from "../constants/css";
 
-export function getProfileEqipmentItemTemplate(
-    quality: number
-): HTMLDivElement {
+export function getProfileEqipmentItemTemplate(quality: number): HTMLDivElement {
     function _getProgressBar(_quality: number): ProgressBarData {
         const itemDefaultWidth = 41;
         const calcWidth = Math.round((_quality / 100) * itemDefaultWidth);
@@ -14,22 +21,20 @@ export function getProfileEqipmentItemTemplate(
     }
 
     const wrapper = document.createElement("div");
-    wrapper.classList.add("js-injection--current-profile-quality-wrapper");
+    wrapper.classList.add(INJECTOR_PROFILE_QUALITY_WRAPPER);
 
     const linesWidth = _getProgressBar(quality);
 
     const linesWrapper = document.createElement("div");
-    linesWrapper.classList.add(
-        "js-injection--current-profile-quality-lines-wrapper"
-    );
+    linesWrapper.classList.add(INJECTOR_PROFILE_QUALITY_PROGRESS_WRAPPER);
 
     const qualityLine = document.createElement("div");
     qualityLine.style.background = getColorByQuality(quality);
     qualityLine.style.width = linesWidth.filled;
-    qualityLine.classList.add("js-injection--current-profile-quality-line");
+    qualityLine.classList.add(INJECTOR_PROFILE_QUALITY_PROGRESS);
 
     const qualityText = document.createElement("div");
-    qualityText.classList.add("js-injection--current-profile-quality-text");
+    qualityText.classList.add(INJECTOR_PROFILE_QUALITY_NUMBER);
     qualityText.innerText = quality.toString();
 
     wrapper.appendChild(linesWrapper);
@@ -42,15 +47,13 @@ export function getProfileEqipmentItemTemplate(
 /*
     Создание родительского элемента для элексиров на броне
 */
-export function getProfileElixirWrapperTemplate(
-    elixirsData: any
-): HTMLDivElement {
+export function getProfileElixirWrapperTemplate(elixirsData: any): HTMLDivElement {
     /*
         Создание строки под элексир с его описаниеи и уровнем
     */
     function createElixirContent(elixirData: any): HTMLDivElement {
         const wrapper = document.createElement("div");
-        wrapper.classList.add("js-injection--current-profile-elixirs-content");
+        wrapper.classList.add(INJECTOR_PROFILE_ELIXIR_CONTENT);
 
         const content = document.createElement("div");
 
@@ -66,17 +69,15 @@ export function getProfileElixirWrapperTemplate(
     }
 
     const wrapper = document.createElement("div");
-    wrapper.classList.add("js-injection--current-profile-elixirs-wrapper");
+    wrapper.classList.add(INJECTOR_PROFILE_ELIXIR_WRAPPER);
 
     for (let i in elixirsData) {
         const content = document.createElement("div");
-        content.classList.add("js-injection--current-profile-elixirs-content");
+        content.classList.add(INJECTOR_PROFILE_ELIXIR_CONTENT);
 
         const elixirDot = document.createElement("div");
-        elixirDot.classList.add("js-injection--current-profile-elixirs-dot");
-        const colors = getColorByElixirLevel(
-            parseInt(elixirsData[i].elixirLevel)
-        );
+        elixirDot.classList.add(INJECTOR_PROFILE_ELIXIR_DOT);
+        const colors = getColorByElixirLevel(parseInt(elixirsData[i].elixirLevel));
 
         elixirDot.style.background = colors.background;
         elixirDot.style.color = colors.color;

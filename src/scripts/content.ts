@@ -10,10 +10,7 @@ function processCharacters() {
 }
 
 function processProfile() {
-    const html = document.querySelector("html");
-    if (html) {
-        injectProfile(html.innerHTML);
-    }
+    injectProfile();
 }
 
 processCharacters();

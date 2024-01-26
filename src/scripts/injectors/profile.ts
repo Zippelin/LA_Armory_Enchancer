@@ -1,22 +1,46 @@
 import { getParsedProfileData, getElixirData } from "../parser";
+
 import {
     getProfileEqipmentItemTemplate,
     getProfileElixirWrapperTemplate,
 } from "../templates/profile";
+
 import { ProfileEquipType, IconPathType } from "../types";
+
 import {
     getEngraveIconPathByNameFromLib,
     getEngraveIconPathByName,
+    getExtensionResourceUrl,
 } from "../tools/url";
-import { UrlSource, NegativeEngraves } from "../constants/vars";
 
-export function injectProfile(pageHTML: string): void {
-    const parsedProfile = getParsedProfileData(pageHTML);
-    if (parsedProfile) {
-        injectProfileEquipment(parsedProfile.Equip);
-        injectEngraves(parsedProfile.Engrave);
-        injectGearsElixirs(parsedProfile.Equip);
-        injectGB();
+import { UrlSource, NegativeEngraves, ExtensionResourceType } from "../constants/vars";
+
+import { HTML_TAG } from "../constants/css";
+
+import {
+    ENGRAVES_WRAPPER,
+    ENGRAVES_OPTIONS,
+    ENGRAVES_CONTAINER,
+    PROFILE_EQUIPMENT_WRAPPER,
+    INJECTOR_ENGRAVE_WRAPPER,
+    INJECTOR_ENGRAVE_LEVEL,
+    INJECTOR_ENGRAVE_ICON,
+    INJECTOR_PROFILE_BG,
+    INJECTOR_PROFILE_BG_SHADOW_01,
+    INJECTOR_PROFILE_BG_SHADOW_02,
+    INJECTOR_PROFILE_EQUIPMEN,
+} from "../constants/css";
+
+export function injectProfile(): void {
+    const pageHTML: string | undefined = document.querySelector(HTML_TAG)?.innerHTML;
+    if (pageHTML) {
+        const parsedProfile = getParsedProfileData(pageHTML);
+        if (parsedProfile) {
+            injectProfileEquipment(parsedProfile.Equip);
+            injectEngraves(parsedProfile.Engrave);
+            injectGearsElixirs(parsedProfile.Equip);
+            injectGB();
+        }
     }
 }
 
@@ -27,15 +51,11 @@ function injectProfileEquipment(equip: ProfileEquipType): void {
             equip[itemName].Element_001.value.qualityValue &&
             equip[itemName].Element_001.value.qualityValue != -1
         ) {
-            const domElement = document.querySelector(
-                "[data-item=" + '"' + itemName + '"]'
-            );
+            const domElement = document.querySelector("[data-item=" + '"' + itemName + '"]');
             if (domElement) {
                 domElement.insertAdjacentElement(
                     "beforeend",
-                    getProfileEqipmentItemTemplate(
-                        equip[itemName].Element_001.value.qualityValue
-                    )
+                    getProfileEqipmentItemTemplate(equip[itemName].Element_001.value.qualityValue)
                 );
             }
         }
@@ -47,14 +67,14 @@ function injectEngraves(engraves: any): void {
         Забираем DOM обертки гравировок
     */
     function getEngravesWrapper(): HTMLDivElement | null {
-        return document.querySelector(".swiper-wrapper");
+        return document.querySelector(".".concat(ENGRAVES_WRAPPER));
     }
     /*
         Отключаем пагинатор Гравировок
     */
     function disableEngravesPaginator(): void {
-        const container = document.querySelector(".swiper-container");
-        const target = document.querySelector(".swiper-option");
+        const container = document.querySelector(".".concat(ENGRAVES_CONTAINER));
+        const target = document.querySelector(".".concat(ENGRAVES_OPTIONS));
         if (container && target) {
             container.removeChild(target);
         }
@@ -93,9 +113,7 @@ function injectEngraves(engraves: any): void {
     */
     function engraveItemPrettier(engraveDome: HTMLElement): UrlSource {
         let engraveText = engraveDome.getElementsByTagName("span")[0].innerHTML;
-        engraveDome.classList.add(
-            "js-injection--current-profile-engrave-wrapper"
-        );
+        engraveDome.classList.add(INJECTOR_ENGRAVE_WRAPPER);
         const regexEngraveLevel = /(.*)(\d+ ур.)/;
         const match = engraveText.match(regexEngraveLevel);
         if (match && match.length === 3) {
@@ -106,24 +124,18 @@ function injectEngraves(engraves: any): void {
             }
             const levelSpan = document.createElement("span");
             levelSpan.innerText = match[2];
-            levelSpan.classList.add(
-                "js-injection--current-profile-engrave-level"
-            );
+            levelSpan.classList.add(INJECTOR_ENGRAVE_LEVEL);
             engraveDome.appendChild(levelSpan);
             const engraveIncoPath = getEngraveIconPath(match[1]);
 
             if (engraveIncoPath.urlSource != UrlSource.NONE) {
-                engraveDome.getElementsByTagName("span")[0].style.fontWeight =
-                    "bold !important";
+                engraveDome.getElementsByTagName("span")[0].style.fontWeight = "bold !important";
                 const img = document.createElement("img");
                 img.src = engraveIncoPath.url;
                 img.style.height = "20px";
                 img.style.width = "20px";
-                img.classList.add("js-injection--current-profile-engrave-icon");
-                engraveDome.insertBefore(
-                    img,
-                    engraveDome.getElementsByTagName("span")[0]
-                );
+                img.classList.add(INJECTOR_ENGRAVE_ICON);
+                engraveDome.insertBefore(img, engraveDome.getElementsByTagName("span")[0]);
                 return engraveIncoPath.urlSource;
             }
         }
@@ -134,14 +146,8 @@ function injectEngraves(engraves: any): void {
         const engravesWrapper = getEngravesWrapper();
         if (engravesWrapper) {
             for (let i = 0; i < engravesWrapper.children.length; i++) {
-                for (
-                    let j = 0;
-                    j < engravesWrapper.children[i].children.length;
-                    j++
-                ) {
-                    let child = engravesWrapper.children[i].children[
-                        j
-                    ] as HTMLElement;
+                for (let j = 0; j < engravesWrapper.children[i].children.length; j++) {
+                    let child = engravesWrapper.children[i].children[j] as HTMLElement;
                     const iconSource = engraveItemPrettier(child);
 
                     // Если источник Гравировки профиль, то помещаем в начало (сортировка)
@@ -175,23 +181,19 @@ function injectEngraves(engraves: any): void {
 
 function injectGB(): void {
     const backgrounImage = document.createElement("img");
-    backgrounImage.classList.add("profile-equipment__character");
-    var extensionId = chrome.runtime.id;
-    backgrounImage.src =
-        "chrome-extension://" + extensionId + "/media/img/profile_bg.png";
-    backgrounImage.classList.add("js-injection--profile-background");
+    backgrounImage.classList.add(PROFILE_EQUIPMENT_WRAPPER);
+    backgrounImage.src = getExtensionResourceUrl(ExtensionResourceType.ProfileBackground);
+    backgrounImage.classList.add(INJECTOR_PROFILE_BG);
 
-    const wrapper = document.querySelector<HTMLElement>(
-        ".profile-equipment__character"
-    );
+    const wrapper = document.querySelector<HTMLElement>(".".concat(PROFILE_EQUIPMENT_WRAPPER));
     if (wrapper) {
         const shadow = wrapper.children[0].cloneNode() as HTMLElement;
         const shadow2 = wrapper.children[0].cloneNode() as HTMLElement;
         const child = wrapper.children[0] as HTMLElement;
         child.style.zIndex = "2";
 
-        shadow.classList.add("js-injection--profile-image-shadow-01");
-        shadow2.classList.add("js-injection--profile-image-shadow-02");
+        shadow.classList.add(INJECTOR_PROFILE_BG_SHADOW_01);
+        shadow2.classList.add(INJECTOR_PROFILE_BG_SHADOW_02);
 
         wrapper.appendChild(backgrounImage);
         wrapper.appendChild(shadow);
@@ -225,9 +227,7 @@ function injectGearsElixirs(equip: ProfileEquipType) {
             continue;
         }
 
-        const domElement = document.querySelector(
-            "[data-item=" + '"' + itemId + '"]'
-        );
+        const domElement = document.querySelector("[data-item=" + '"' + itemId + '"]');
 
         if (domElement) {
             const parsedElixirData = [];
@@ -238,8 +238,7 @@ function injectGearsElixirs(equip: ProfileEquipType) {
                 }
             }
             const style = window.getComputedStyle(domElement);
-            const injectingElement =
-                getProfileElixirWrapperTemplate(parsedElixirData);
+            const injectingElement = getProfileElixirWrapperTemplate(parsedElixirData);
             injectingElement.style.top = style.top;
 
             injectingElement.style.left =
@@ -249,11 +248,9 @@ function injectGearsElixirs(equip: ProfileEquipType) {
     }
 
     if (dataSource) {
-        const profileEq = document.querySelector(
-            ".profile-equipment__character"
-        );
+        const profileEq = document.querySelector(".".concat(PROFILE_EQUIPMENT_WRAPPER));
         if (profileEq) {
-            profileEq.classList.add("profile-equipment__character-override");
+            profileEq.classList.add(INJECTOR_PROFILE_EQUIPMEN);
         }
     }
 }
