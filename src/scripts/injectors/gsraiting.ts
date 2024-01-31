@@ -15,6 +15,7 @@ import {
     GS_RAITING_TABLE_CELL_STAT_SLOT_01,
     GS_RAITING_TABLE_CELL_STAT_SLOT_02,
     GS_RAITING_TABLE_CELL_STATS_SLOT_LOADER,
+    CHARACTERS_RAITING_WRAPPER,
 } from "../constants/css";
 import { GS_RAITING } from "../constants/urls";
 import { GsListCellType, PAGE_CHECK_TIMEOUT } from "../constants/vars";
@@ -78,7 +79,15 @@ function delayInjectOnClassChange(): void {
 }
 
 function getCharactersListWrapper(): HTMLTableElement | null {
-    return document.querySelector(".".concat(CHARACTERS_RAITING_TABLE));
+    const wrapper = document.querySelector(".".concat(CHARACTERS_RAITING_WRAPPER));
+    if (wrapper) {
+        // Ищем таблицуу с рейтинговыми персонажами, а не личную
+        const table = wrapper.querySelector(".".concat(CHARACTERS_RAITING_TABLE)) as HTMLElement;
+        if (table && table.parentElement?.classList.contains(CHARACTERS_RAITING_WRAPPER)) {
+            return table as HTMLTableElement;
+        }
+    }
+    return null;
 }
 
 function _injectCharactersRaitingBulk(table: HTMLTableElement): void {
@@ -130,6 +139,8 @@ function _injectTableBody(table: HTMLTableElement): void {
         if (cellWrapper) {
             (<any>cellWrapper.children[0]).style.display = "none";
             (<any>cellWrapper.children[1]).style.display = "none";
+            cellWrapper.children[0].innerHTML = "";
+            cellWrapper.children[1].innerHTML = "";
 
             cellWrapper.insertBefore(teplateLoaderFunc(), cellWrapper.children[0]);
         } else {

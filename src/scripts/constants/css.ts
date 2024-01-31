@@ -32,6 +32,7 @@ export const INJECTOR_PROFILE_ELIXIR_CONTENT = "js-injection--current-profile-el
 export const INJECTOR_PROFILE_ELIXIR_WRAPPER = "js-injection--current-profile-elixirs-wrapper";
 export const INJECTOR_PROFILE_ELIXIR_DOT = "js-injection--current-profile-elixirs-dot";
 export const CHARACTERS_RAITING_TABLE = "gsrating__table";
+export const CHARACTERS_RAITING_WRAPPER = "gsrating";
 export const GS_RAITING_DEFAULT_HEADER = "gsrating__table-th--rating";
 export const GS_RAITING_ENGRAVE_HEADER = "js-injection--gslist-header-engraves";
 export const GS_RAITING_STATS_HEADER = "js-injection--gslist-header-stats";

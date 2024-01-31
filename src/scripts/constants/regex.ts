@@ -9,6 +9,6 @@ export const SCRIPT_PROFILE: RegExp =
 export const ELIXIR_DATA: RegExp =
     /<FONT.*>(?<itemType>\[.*?\])<\/FONT>(?<exilirName>.+?)<FONT.+>(?<elixirLevel>\d+)/;
 export const ENGRAVES_DATA: RegExp =
-    /(?<engraveName>[А-яё]+[\s-]*[А-яё]*)\s(?<engraveLevel>\d)\sур/g;
+    /(?<engraveName>[А-яё»«]+[\s-]*[А-яё»«]*)\s(?<engraveLevel>\d)\sур/g;
 export const STATS_DATA: RegExp =
     /(?<statName>Смертоносность|Подавление|Мастерство|Подавление|Стойкость|Искусность|Сноровка).+?(?<statValue>\d+)/g;
