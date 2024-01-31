@@ -40,7 +40,7 @@ export function injectProfile(): void {
             injectProfileEquipment(parsedProfile.Equip);
             injectEngraves(parsedProfile.Engrave);
             injectGearsElixirs(parsedProfile.Equip);
-            injectGB();
+            injectBG();
         }
     }
 }
@@ -184,7 +184,7 @@ function injectEngraves(engraves: any): void {
     disableEngravesPaginator();
 }
 
-function injectGB(): void {
+function injectBG(): void {
     const backgrounImage = createImg({
         src: getExtensionResourceUrl(ExtensionResourceType.ProfileBackground),
         classes: [PROFILE_EQUIPMENT_WRAPPER, INJECTOR_PROFILE_BG],

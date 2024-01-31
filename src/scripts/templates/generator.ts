@@ -28,6 +28,32 @@ export function createSpan({
     return div;
 }
 
+export function createTableColumnHeader({
+    text = "",
+    classes = [],
+    style = {},
+}: {
+    text?: string;
+    classes?: Array<string>;
+    style?: { [property: string]: string };
+} = {}): HTMLElement {
+    const th = createElement("th", text, classes, style) as HTMLElement;
+    return th;
+}
+
+export function createTableCell({
+    text = "",
+    classes = [],
+    style = {},
+}: {
+    text?: string;
+    classes?: Array<string>;
+    style?: { [property: string]: string };
+} = {}): HTMLElement {
+    const td = createElement("td", text, classes, style) as HTMLElement;
+    return td;
+}
+
 export function createButton({
     text = "",
     classes = [],

@@ -70,3 +70,8 @@ export interface SortingOptionType {
     callback: Function;
     isCurrent: boolean;
 }
+
+export interface EngraveData {
+    engraveName: string;
+    engraveLevel: string;
+}

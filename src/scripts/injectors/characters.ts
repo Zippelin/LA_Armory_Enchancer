@@ -47,7 +47,7 @@ function injectCharaterGearsPower(characterName: string, targetDom: HTMLButtonEl
     targetDom.insertAdjacentElement("beforeend", injection);
     getCharacterData(characterName, _inject);
 
-    function _inject(text: string) {
+    function _inject(text: string, characterName: string) {
         disableePendingIndicator(injection);
 
         injection.appendChild(getClassIconTemplate(getClassIconUrl(text)));

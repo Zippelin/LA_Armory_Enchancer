@@ -4,8 +4,10 @@ import {
     CLASS_ICON_URL,
     SCRIPT_PROFILE,
     ELIXIR_DATA,
+    ENGRAVES_DATA,
 } from "./constants/regex";
-import { ElixirDataType, ProfileType } from "./types";
+import { ClassesEngraves } from "./constants/vars";
+import { ElixirDataType, EngraveData, ProfileType } from "./types";
 
 export function getCurrentGearsPower(text: string): string {
     const result = text.match(CURRENT_GEAR_POWER);
@@ -58,4 +60,34 @@ export function getOrderNumber(text: string): string {
         return match[0];
     }
     return "0";
+}
+
+export function getEgravesList(text: string): Array<EngraveData> {
+    const result: Array<EngraveData> = Array.from(text.matchAll(ENGRAVES_DATA), (x) => [
+        x[1],
+        x[2],
+    ]).map((val) => {
+        return {
+            engraveName: val[0].trim(),
+            engraveLevel: val[1].trim(),
+        };
+    });
+
+    return result;
+}
+
+export function getClassEngraves(engravesList: Array<EngraveData>): Array<EngraveData> {
+    return engravesList.filter((val) => {
+        if (ClassesEngraves.includes(val.engraveName.toLocaleLowerCase())) {
+            return val;
+        }
+    });
+}
+
+export function getStatsList(engravesList: Array<EngraveData>): Array<EngraveData> {
+    return engravesList.filter((val) => {
+        if (ClassesEngraves.includes(val.engraveName.toLocaleLowerCase())) {
+            return val;
+        }
+    });
 }

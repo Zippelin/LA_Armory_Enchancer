@@ -219,3 +219,22 @@
     font-size: 14px;
     visibility: hidden;
 }
+
+.js-injection--gslist-engrave-slot-loader {
+    font-size: 12px;
+    color: #707070;
+}
+.js-injection--gslist-engrave-slot-01 {
+    padding-bottom: 3px;
+}
+
+.js-injection--gslist-engrave-slot-01,
+.js-injection--gslist-engrave-slot-02 {
+    font-size: 12px;
+    color: #e4ba27;
+    text-align: left;
+}
+
+.js-injection--gslist-engrave-wrapper {
+    min-width: 200px;
+}
