@@ -75,3 +75,8 @@ export interface EngraveData {
     engraveName: string;
     engraveLevel: string;
 }
+
+export interface StatDataType {
+    statName: string;
+    statValue: string;
+}

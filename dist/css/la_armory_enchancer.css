@@ -220,7 +220,8 @@
     visibility: hidden;
 }
 
-.js-injection--gslist-engrave-slot-loader {
+.js-injection--gslist-engrave-slot-loader,
+.js-injection--gslist-stats-slot-loader {
     font-size: 12px;
     color: #707070;
 }
@@ -229,12 +230,18 @@
 }
 
 .js-injection--gslist-engrave-slot-01,
-.js-injection--gslist-engrave-slot-02 {
-    font-size: 12px;
+.js-injection--gslist-engrave-slot-02,
+.js-injection--gslist-stat-slot-01,
+.js-injection--gslist-stat-slot-02 {
+    font-size: 14px;
     color: #e4ba27;
     text-align: left;
 }
 
 .js-injection--gslist-engrave-wrapper {
+    min-width: 200px;
+}
+
+.js-injection--gslist-stats-wrapper {
     min-width: 200px;
 }

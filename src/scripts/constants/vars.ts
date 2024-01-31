@@ -12,6 +12,11 @@ export enum CharactersSortBy {
     GEARS_POWER = 1,
 }
 
+export enum GsListCellType {
+    ENGRAVE = 1,
+    STATS = 2,
+}
+
 export const NegativeEngraves: Array<string> = ["медлительность", "износ", "миролюбие", "ржавчина"];
 
 export const SortingOptions: SortingOptionType[] = [

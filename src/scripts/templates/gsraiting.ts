@@ -5,9 +5,13 @@ import {
     GS_RAITING_TABLE_CELL_ENGRAVE_WRAPPER,
     GS_RAITING_ENGRAVE_HEADER,
     GS_RAITING_DEFAULT_HEADER,
+    GS_RAITING_TABLE_CELL_STATS_WRAPPER,
+    GS_RAITING_TABLE_CELL_STAT_SLOT_01,
+    GS_RAITING_TABLE_CELL_STAT_SLOT_02,
+    GS_RAITING_TABLE_CELL_STATS_SLOT_LOADER,
 } from "../constants/css";
 import { getEngraveIconPathByNameFromLib } from "../tools/url";
-import { EngraveData } from "../types";
+import { EngraveData, StatDataType } from "../types";
 import { createTableCell, createTableColumnHeader, createDiv, createImg } from "./generator";
 
 export function getTaitingTableHeader(text: string): HTMLElement {
@@ -39,6 +43,26 @@ export function getEngravesTableCell(): HTMLElement {
     return wrapper;
 }
 
+export function getStatsTableCell(): HTMLElement {
+    const wrapper = createTableCell({ classes: [GS_RAITING_TABLE_CELL_STATS_WRAPPER] });
+
+    const loading = getStatsCellLoader();
+
+    const statSlot01 = createDiv({
+        classes: [GS_RAITING_TABLE_CELL_STAT_SLOT_01],
+        style: { display: "none" },
+    });
+    const statSlot02 = createDiv({
+        classes: [GS_RAITING_TABLE_CELL_STAT_SLOT_02],
+        style: { display: "none" },
+    });
+
+    wrapper.appendChild(loading);
+    wrapper.appendChild(statSlot01);
+    wrapper.appendChild(statSlot02);
+    return wrapper;
+}
+
 export function getEngravesCellLoader() {
     return createDiv({
         text: "загрузка",
@@ -46,9 +70,16 @@ export function getEngravesCellLoader() {
     });
 }
 
-export function getGSListEngraveImg(engrave: EngraveData): HTMLImageElement {
+export function getStatsCellLoader() {
+    return createDiv({
+        text: "загрузка",
+        classes: [GS_RAITING_TABLE_CELL_STATS_SLOT_LOADER],
+    });
+}
+
+export function getGSListEngraveImg(engraveName: string): HTMLImageElement {
     const img = createImg({
-        src: getEngraveIconPathByNameFromLib(engrave.engraveName),
+        src: getEngraveIconPathByNameFromLib(engraveName),
         style: {
             height: "20px",
             width: "20px",
@@ -57,4 +88,18 @@ export function getGSListEngraveImg(engrave: EngraveData): HTMLImageElement {
         },
     });
     return img;
+}
+
+export function getStatLine(statData: StatDataType): HTMLDivElement {
+    const wrapper = createDiv({ style: { display: "flex" } });
+    const text = createDiv();
+    text.innerHTML = statData.statName;
+    const spacer = createDiv({ style: { flexGrow: "1" } });
+    const value = createDiv();
+    value.innerHTML = statData.statValue;
+
+    wrapper.appendChild(text);
+    wrapper.appendChild(spacer);
+    wrapper.appendChild(value);
+    return wrapper;
 }

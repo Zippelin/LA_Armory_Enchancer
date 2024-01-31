@@ -5,9 +5,10 @@ import {
     SCRIPT_PROFILE,
     ELIXIR_DATA,
     ENGRAVES_DATA,
+    STATS_DATA,
 } from "./constants/regex";
 import { ClassesEngraves } from "./constants/vars";
-import { ElixirDataType, EngraveData, ProfileType } from "./types";
+import { ElixirDataType, EngraveData, ProfileType, StatDataType } from "./types";
 
 export function getCurrentGearsPower(text: string): string {
     const result = text.match(CURRENT_GEAR_POWER);
@@ -84,10 +85,22 @@ export function getClassEngraves(engravesList: Array<EngraveData>): Array<Engrav
     });
 }
 
-export function getStatsList(engravesList: Array<EngraveData>): Array<EngraveData> {
-    return engravesList.filter((val) => {
-        if (ClassesEngraves.includes(val.engraveName.toLocaleLowerCase())) {
-            return val;
+export function getMainStatsList(text: string): Array<StatDataType> {
+    const result: Array<StatDataType> = Array.from(text.matchAll(STATS_DATA), (x) => [
+        x[1],
+        x[2],
+    ]).map((val) => {
+        return {
+            statName: val[0].trim(),
+            statValue: val[1].trim(),
+        };
+    });
+    result.sort((a, b) => {
+        if (parseInt(a.statValue) > parseInt(b.statValue)) {
+            return -1;
+        } else {
+            return 1;
         }
     });
+    return result.slice(0, 2);
 }
