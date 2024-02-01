@@ -8,7 +8,7 @@ import {
     STATS_DATA,
 } from "./constants/regex";
 import { ClassesEngraves } from "./constants/vars";
-import { ElixirDataType, EngraveData, ProfileType, StatDataType } from "./types";
+import { ElixirDataType, GSRaitingCellDataType, ProfileType } from "./types";
 
 export function getCurrentGearsPower(text: string): string {
     const result = text.match(CURRENT_GEAR_POWER);
@@ -63,40 +63,41 @@ export function getOrderNumber(text: string): string {
     return "0";
 }
 
-export function getEgravesList(text: string): Array<EngraveData> {
-    const result: Array<EngraveData> = Array.from(text.matchAll(ENGRAVES_DATA), (x) => [
+export function getEgravesList(text: string): Array<GSRaitingCellDataType> {
+    const result: Array<GSRaitingCellDataType> = Array.from(text.matchAll(ENGRAVES_DATA), (x) => [
         x[1],
         x[2],
     ]).map((val) => {
         return {
-            engraveName: val[0].trim(),
-            engraveLevel: val[1].trim(),
+            name: val[0].trim(),
+            value: val[1].trim(),
+            icon: val[0].trim(),
         };
     });
 
     return result;
 }
 
-export function getClassEngraves(engravesList: Array<EngraveData>): Array<EngraveData> {
+export function getClassEngraves(
+    engravesList: Array<GSRaitingCellDataType>
+): Array<GSRaitingCellDataType> {
     return engravesList.filter((val) => {
-        if (ClassesEngraves.includes(val.engraveName.toLocaleLowerCase())) {
+        if (ClassesEngraves.includes(val.name.toLocaleLowerCase())) {
             return val;
         }
     });
 }
 
-export function getMainStatsList(text: string): Array<StatDataType> {
-    const result: Array<StatDataType> = Array.from(text.matchAll(STATS_DATA), (x) => [
-        x[1],
-        x[2],
-    ]).map((val) => {
+export function getMainStatsList(text: string): Array<GSRaitingCellDataType> {
+    const result = Array.from(text.matchAll(STATS_DATA), (x) => [x[1], x[2]]).map((val) => {
         return {
-            statName: val[0].trim(),
-            statValue: val[1].trim(),
+            name: val[0].trim(),
+            value: val[1].trim(),
+            icon: "",
         };
     });
     result.sort((a, b) => {
-        if (parseInt(a.statValue) > parseInt(b.statValue)) {
+        if (parseInt(a.value) > parseInt(b.value)) {
             return -1;
         } else {
             return 1;

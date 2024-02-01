@@ -11,7 +11,7 @@ import {
     GS_RAITING_TABLE_CELL_STATS_SLOT_LOADER,
 } from "../constants/css";
 import { getEngraveIconPathByNameFromLib } from "../tools/url";
-import { EngraveData, StatDataType } from "../types";
+import { GSRaitingCellDataType } from "../types";
 import { createTableCell, createTableColumnHeader, createDiv, createImg } from "./generator";
 
 export function getTaitingTableHeader(text: string): HTMLElement {
@@ -90,16 +90,20 @@ export function getGSListEngraveImg(engraveName: string): HTMLImageElement {
     return img;
 }
 
-export function getStatLine(statData: StatDataType): HTMLDivElement {
+export function getGSCellLine(statData: GSRaitingCellDataType): HTMLDivElement {
     const wrapper = createDiv({ style: { display: "flex" } });
     const text = createDiv();
-    text.innerHTML = statData.statName;
-    const spacer = createDiv({ style: { flexGrow: "1" } });
+    text.innerHTML = statData.name;
+    const spacerMiddle = createDiv({ style: { flexGrow: "1" } });
     const value = createDiv();
-    value.innerHTML = statData.statValue;
+    value.innerHTML = statData.value;
 
+    if (statData.icon) {
+        const icon = getGSListEngraveImg(statData.icon);
+        wrapper.appendChild(icon);
+    }
     wrapper.appendChild(text);
-    wrapper.appendChild(spacer);
+    wrapper.appendChild(spacerMiddle);
     wrapper.appendChild(value);
     return wrapper;
 }

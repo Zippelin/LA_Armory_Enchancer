@@ -71,12 +71,8 @@ export interface SortingOptionType {
     isCurrent: boolean;
 }
 
-export interface EngraveData {
-    engraveName: string;
-    engraveLevel: string;
-}
-
-export interface StatDataType {
-    statName: string;
-    statValue: string;
+export interface GSRaitingCellDataType {
+    name: string;
+    value: string;
+    icon: string;
 }

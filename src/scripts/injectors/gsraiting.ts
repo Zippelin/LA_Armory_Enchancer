@@ -22,15 +22,14 @@ import { GsListCellType, PAGE_CHECK_TIMEOUT } from "../constants/vars";
 import {
     getEngravesCellLoader,
     getEngravesTableCell,
-    getGSListEngraveImg,
-    getStatLine,
+    getGSCellLine,
     getStatsCellLoader,
     getStatsTableCell,
     getTaitingTableHeader,
 } from "../templates/gsraiting";
 import { getClassEngraves, getEgravesList, getMainStatsList } from "../parser";
-import { createDiv } from "../templates/generator";
-import { StatDataType } from "../types";
+
+import { GSRaitingCellDataType } from "../types";
 
 export function injectCharactersRaitingBulk(): void {
     if (window.location.toString().startsWith(GS_RAITING)) {
@@ -184,15 +183,20 @@ function _injectTableBody(table: HTMLTableElement): void {
                 basicDom: HTMLElement,
                 loaderCss: string,
                 slot01Css: string,
-                slot02Css: string,
-                cellType: GsListCellType
+                slot02Css: string
             ) {
-                let slotsData: Array<string | StatDataType> = [];
-                if (cellType === GsListCellType.ENGRAVE) {
+                let slotsData: Array<GSRaitingCellDataType> = [];
+
+                const slots: Array<HTMLElement> = [
+                    basicDom.getElementsByClassName(slot01Css)[0] as HTMLElement,
+                    basicDom.getElementsByClassName(slot02Css)[0] as HTMLElement,
+                ];
+
+                if (loaderCss === GS_RAITING_TABLE_CELL_ENGRAVE_SLOT_LOADER) {
                     const engraves = getEgravesList(characterRawPage);
-                    slotsData = getClassEngraves(engraves).map((x) => x.engraveName);
+                    slotsData = getClassEngraves(engraves);
                 }
-                if (cellType === GsListCellType.STATS) {
+                if (loaderCss === GS_RAITING_TABLE_CELL_STATS_SLOT_LOADER) {
                     slotsData = getMainStatsList(characterRawPage);
                 }
 
@@ -201,33 +205,9 @@ function _injectTableBody(table: HTMLTableElement): void {
                     basicDom.removeChild(loader);
                 }
 
-                const slot01 = basicDom.getElementsByClassName(slot01Css)[0] as HTMLElement;
-                const slot02 = basicDom.getElementsByClassName(slot02Css)[0] as HTMLElement;
-
-                if (slotsData.length >= 1) {
-                    if (cellType === GsListCellType.ENGRAVE) {
-                        slot01.innerHTML = slotsData[0] as string;
-                    }
-                    if (cellType === GsListCellType.STATS) {
-                        slot01.appendChild(getStatLine(slotsData[0] as StatDataType));
-                    }
-                    slot01.style.display = "block";
-                    if (cellType === GsListCellType.ENGRAVE) {
-                        slot01.appendChild(getGSListEngraveImg(slotsData[0] as string));
-                    }
-                }
-                if (slotsData.length == 2) {
-                    if (cellType === GsListCellType.ENGRAVE) {
-                        slot02.innerHTML = slotsData[1] as string;
-                    }
-                    if (cellType === GsListCellType.STATS) {
-                        slot02.appendChild(getStatLine(slotsData[1] as StatDataType));
-                    }
-
-                    slot02.style.display = "block";
-                    if (cellType === GsListCellType.ENGRAVE) {
-                        slot02.appendChild(getGSListEngraveImg(slotsData[1] as string));
-                    }
+                for (let i = 0; i < slotsData.length; i++) {
+                    slots[i].appendChild(getGSCellLine(slotsData[i]));
+                    slots[i].style.display = "block";
                 }
             }
 
@@ -245,8 +225,7 @@ function _injectTableBody(table: HTMLTableElement): void {
                         engraveDom,
                         GS_RAITING_TABLE_CELL_ENGRAVE_SLOT_LOADER,
                         GS_RAITING_TABLE_CELL_ENGRAVE_SLOT_01,
-                        GS_RAITING_TABLE_CELL_ENGRAVE_SLOT_02,
-                        GsListCellType.ENGRAVE
+                        GS_RAITING_TABLE_CELL_ENGRAVE_SLOT_02
                     );
                     // Добавляем статы
                     _injectBasicDom(
@@ -254,8 +233,7 @@ function _injectTableBody(table: HTMLTableElement): void {
                         statsDom,
                         GS_RAITING_TABLE_CELL_STATS_SLOT_LOADER,
                         GS_RAITING_TABLE_CELL_STAT_SLOT_01,
-                        GS_RAITING_TABLE_CELL_STAT_SLOT_02,
-                        GsListCellType.STATS
+                        GS_RAITING_TABLE_CELL_STAT_SLOT_02
                     );
                 }
             }
