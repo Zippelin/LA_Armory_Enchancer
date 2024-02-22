@@ -29,10 +29,3 @@ export function getArmoryCharacterUrl(characterName: string): string {
 function getExtensionUrl(): string {
     return "chrome-extension://" + chrome.runtime.id + "/";
 }
-
-export function getExtensionResourceUrl(resourceType: ExtensionResourceType): string {
-    switch (resourceType) {
-        case ExtensionResourceType.ProfileBackground:
-            return getExtensionUrl() + "media/img/profile_bg.png";
-    }
-}

@@ -7,11 +7,7 @@ import {
 
 import { ProfileEquipType, IconPathType } from "../types";
 
-import {
-    getEngraveIconPathByNameFromLib,
-    getEngraveIconPathByName,
-    getExtensionResourceUrl,
-} from "../tools/url";
+import { getEngraveIconPathByNameFromLib, getEngraveIconPathByName } from "../tools/url";
 
 import { UrlSource, NegativeEngraves, ExtensionResourceType } from "../constants/vars";
 
@@ -25,9 +21,6 @@ import {
     INJECTOR_ENGRAVE_WRAPPER,
     INJECTOR_ENGRAVE_LEVEL,
     INJECTOR_ENGRAVE_ICON,
-    INJECTOR_PROFILE_BG,
-    INJECTOR_PROFILE_BG_SHADOW_01,
-    INJECTOR_PROFILE_BG_SHADOW_02,
     INJECTOR_PROFILE_EQUIPMEN,
 } from "../constants/css";
 import { createImg, createSpan } from "../templates/generator";
@@ -40,7 +33,6 @@ export function injectProfile(): void {
             injectProfileEquipment(parsedProfile.Equip);
             injectEngraves(parsedProfile.Engrave);
             injectGearsElixirs(parsedProfile.Equip);
-            injectBG();
         }
     }
 }
@@ -182,28 +174,6 @@ function injectEngraves(engraves: any): void {
 
     flatterEngraveWrapper();
     disableEngravesPaginator();
-}
-
-function injectBG(): void {
-    const backgrounImage = createImg({
-        src: getExtensionResourceUrl(ExtensionResourceType.ProfileBackground),
-        classes: [PROFILE_EQUIPMENT_WRAPPER, INJECTOR_PROFILE_BG],
-    });
-
-    const wrapper = document.querySelector<HTMLElement>(".".concat(PROFILE_EQUIPMENT_WRAPPER));
-    if (wrapper) {
-        const shadow = wrapper.children[0].cloneNode() as HTMLElement;
-        const shadow2 = wrapper.children[0].cloneNode() as HTMLElement;
-        const child = wrapper.children[0] as HTMLElement;
-        child.style.zIndex = "2";
-
-        shadow.classList.add(INJECTOR_PROFILE_BG_SHADOW_01);
-        shadow2.classList.add(INJECTOR_PROFILE_BG_SHADOW_02);
-
-        wrapper.appendChild(backgrounImage);
-        wrapper.appendChild(shadow);
-        wrapper.appendChild(shadow2);
-    }
 }
 
 /*
