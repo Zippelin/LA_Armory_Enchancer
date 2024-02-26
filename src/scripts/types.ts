@@ -37,6 +37,7 @@ export interface ProfileEquipType {
                             contentStr: string;
                         };
                     };
+                    topStr: string;
                 };
             };
         };
@@ -48,6 +49,19 @@ export interface ProfileEquipType {
                             contentStr: string;
                         };
                     };
+                    topStr: string;
+                };
+            };
+        };
+        Element_009: {
+            value: {
+                Element_000: {
+                    contentStr: {
+                        [Element_000: string]: {
+                            contentStr: string;
+                        };
+                    };
+                    topStr: string;
                 };
             };
         };

@@ -182,22 +182,34 @@ function injectEngraves(engraves: any): void {
 function injectGearsElixirs(equip: ProfileEquipType) {
     const offsetX = 55;
     let dataSource;
+    console.log(equip);
+
     for (let itemId in equip) {
         // Предположительно данные по элексирам могут быть только в элементах Element_007 или Element_008.
         if (
             equip[itemId].Element_007 &&
             equip[itemId].Element_007.value &&
             equip[itemId].Element_007.value.Element_000 &&
-            equip[itemId].Element_007.value.Element_000.contentStr
+            equip[itemId].Element_007.value.Element_000.contentStr &&
+            equip[itemId].Element_007.value.Element_000.topStr.includes("Эффекты эликсира")
         ) {
             dataSource = equip[itemId].Element_007.value.Element_000.contentStr;
         } else if (
             equip[itemId].Element_008 &&
             equip[itemId].Element_008.value &&
             equip[itemId].Element_008.value.Element_000 &&
-            equip[itemId].Element_008.value.Element_000.contentStr
+            equip[itemId].Element_008.value.Element_000.contentStr &&
+            equip[itemId].Element_008.value.Element_000.topStr.includes("Эффекты эликсира")
         ) {
             dataSource = equip[itemId].Element_008.value.Element_000.contentStr;
+        } else if (
+            equip[itemId].Element_009 &&
+            equip[itemId].Element_009.value &&
+            equip[itemId].Element_009.value.Element_000 &&
+            equip[itemId].Element_009.value.Element_000.contentStr &&
+            equip[itemId].Element_009.value.Element_000.topStr.includes("Эффекты эликсира")
+        ) {
+            dataSource = equip[itemId].Element_009.value.Element_000.contentStr;
         } else {
             continue;
         }
