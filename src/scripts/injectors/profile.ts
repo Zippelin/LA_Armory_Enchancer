@@ -182,7 +182,6 @@ function injectEngraves(engraves: any): void {
 function injectGearsElixirs(equip: ProfileEquipType) {
     const offsetX = 55;
     let dataSource;
-    console.log(equip);
 
     for (let itemId in equip) {
         // Предположительно данные по элексирам могут быть только в элементах Element_007 или Element_008.
