@@ -8,29 +8,29 @@
 }
 
 /* Развигаем экипировку */
-.slot1,
-.slot2,
-.slot3,
-.slot4,
-.slot5,
-.slot6,
-.slot14,
-.slot15 {
+.profile-equipment__slot .slot1,
+.profile-equipment__slot .slot2,
+.profile-equipment__slot .slot3,
+.profile-equipment__slot .slot4,
+.profile-equipment__slot .slot5,
+.profile-equipment__slot .slot6,
+.profile-equipment__slot .slot14,
+.profile-equipment__slot .slot15 {
     left: 5px !important;
 }
 
-.slot7,
-.slot8,
-.slot9,
-.slot10,
-.slot11,
-.slot12,
-.slot13 {
+.profile-equipment__slot .slot7,
+.profile-equipment__slot .slot8,
+.profile-equipment__slot .slot9,
+.profile-equipment__slot .slot10,
+.profile-equipment__slot .slot11,
+.profile-equipment__slot .slot12,
+.profile-equipment__slot .slot13 {
     left: 555px !important;
 }
 
 /* Сдвигаем аватар персонажа */
-.profile-equipment__character-override {
+.profile-equipment__slot__character-override {
     justify-content: right !important;
     padding-right: 30px !important;
 }
